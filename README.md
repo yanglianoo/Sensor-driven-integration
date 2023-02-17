@@ -3,7 +3,8 @@
 ## 姿态传感器
 ### LORD-MicroStrain
 > 官网：https://www.microstrain.com/inertial-sensors/3dm-gx5-25   
-> Github：https://github.com/LORD-MicroStrain/MSCL
+> Github：https://github.com/LORD-MicroStrain/MSCL     
+> API文档：https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html
  - 测试
    ```bash
     cd imu/LORD-MicroStrain 
