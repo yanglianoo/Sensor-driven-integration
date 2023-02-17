@@ -1,7 +1,8 @@
 #头文件搜索路径
 INCLUDE:=-Ic++-mscl/source 
 INCLUDE+=-Ic++-mscl/Boost/include
-#指定链接库目录
+INCLUDE+=-I/include
+#指定静态链接库目录
 LIBPATH:=-Lc++-mscl
 LIB:=-lmscl
 LIB+=-lstdc++
