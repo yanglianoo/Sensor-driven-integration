@@ -1,11 +1,7 @@
 #include <iostream>
 #include "mscl/mscl.h"
 #include <vector>
-#include "include/getCurrentConfig.h"
-#include "include/setCurrentConfig.h"
-#include "include/startSampling.h"
-#include "include/setToIdle.h"
-#include "include/parseData.h"
+#include "include/MicroStrain.h"
 using namespace std;
 using namespace mscl;
 int main()
