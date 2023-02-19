@@ -4,10 +4,7 @@
 int main()
 {   
    
-    IMU* imu = new MicroStrain();
-    imu->initialize("/dev/ttyUSB0",115200);
-    
-
-
+    IMU* imu = new LpmsIG1();
+    imu->initialize("/dev/ttyUSB0",921600);
     return 0;
 }
