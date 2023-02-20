@@ -2,8 +2,11 @@
 传感器驱动集成-中间件项目-开发文档
  - `lib`：各类传感器的驱动动态库
  - `include`：二次封装头文件
- - `src`: 二次封装源文件
-现在支持的传感器：
+ - `src`: 二次封装源文件          
+
+现在支持的传感器：     
+`3DMGX5-AHRS`：    
+`LPMS-IG1`：
 ## 姿态传感器
 ### LORD-MicroStrain
 > 官网：https://www.microstrain.com/inertial-sensors/3dm-gx5-25   
@@ -24,7 +27,8 @@
    ```
 
 ### LPMS-IG1
-> 官网：https://www.alubi.cn/lpms-ig1-series/           
+> 官网：https://www.alubi.cn/lpms-ig1-series/      
+> 驱动库：https://bitbucket.org/lpresearch/lpmsig1opensourcelib
 - 数据读取测试
   ```bash
     cd imu/lpmsig1opensourcelib/linux_example/build

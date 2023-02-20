@@ -139,7 +139,6 @@ void LpmsIG1::printTask()
             linear_acceleration.y = sd.gyroIAlignmentCalibrated.data[1];
             linear_acceleration.z = sd.gyroIAlignmentCalibrated.data[2];
         }
-        this_thread::sleep_for(chrono::milliseconds(2));
     }
 
     printThreadIsRunning = false;
