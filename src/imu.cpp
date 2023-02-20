@@ -108,41 +108,24 @@ void MicroStrain::initialize(const std::string& port, uint32_t baudRate)
 static bool printThreadIsRunning=false;
 void LpmsIG1::printTask()
 {   
-    if (sensor1->getStatus() != STATUS_CONNECTED)
-    {
-        printThreadIsRunning = false;
-        logd(TAG, "Sensor is not connected. Sensor Status: %d\n", sensor1->getStatus());
-        logd(TAG, "printTask terminated\n");
-        return;
-    }
-    
-    sensor1->commandGotoStreamingMode();
-    
-    printThreadIsRunning = true;
-    while (sensor1->getStatus() == STATUS_CONNECTED && printThreadIsRunning)
-    {
-        IG1ImuDataI sd;
-        if (sensor1->hasImuData())
-        {
-            sensor1->getImuData(sd);
-            float freq = sensor1->getDataFrequency();
-            // logd(TAG, "t(s): %.3f acc: %+2.2f %+2.2f %+2.2f gyr: %+3.2f %+3.2f %+3.2f euler: %+3.2f %+3.2f %+3.2f Hz:%3.3f \r\n", 
-            //     sd.timestamp*0.002f, 
-            //     sd.accCalibrated.data[0], sd.accCalibrated.data[1], sd.accCalibrated.data[2],
-            //     sd.gyroIAlignmentCalibrated.data[0], sd.gyroIAlignmentCalibrated.data[1], sd.gyroIAlignmentCalibrated.data[2],
-            //     sd.euler.data[0], sd.euler.data[1], sd.euler.data[2], 
-            //     freq);
-            angular_velocity.x =  sd.accCalibrated.data[0];
-            angular_velocity.y =  sd.accCalibrated.data[1];
-            angular_velocity.z =  sd.accCalibrated.data[2];
-            linear_acceleration.x = sd.gyroIAlignmentCalibrated.data[0];
-            linear_acceleration.y = sd.gyroIAlignmentCalibrated.data[1];
-            linear_acceleration.z = sd.gyroIAlignmentCalibrated.data[2];
-        }
-    }
 
-    printThreadIsRunning = false;
-    logd(TAG, "printTask terminated\n");
+    if (sensor1->hasImuData())
+    {
+        sensor1->getImuData(sd);
+        float freq = sensor1->getDataFrequency();
+        logd(TAG, "t(s): %.3f acc: %+2.2f %+2.2f %+2.2f gyr: %+3.2f %+3.2f %+3.2f euler: %+3.2f %+3.2f %+3.2f Hz:%3.3f \r\n", 
+            sd.timestamp*0.002f, 
+            sd.accCalibrated.data[0], sd.accCalibrated.data[1], sd.accCalibrated.data[2],
+            sd.gyroIAlignmentCalibrated.data[0], sd.gyroIAlignmentCalibrated.data[1], sd.gyroIAlignmentCalibrated.data[2],
+            sd.euler.data[0], sd.euler.data[1], sd.euler.data[2], 
+            freq);
+        angular_velocity.x =  sd.accCalibrated.data[0];
+        angular_velocity.y =  sd.accCalibrated.data[1];
+        angular_velocity.z =  sd.accCalibrated.data[2];
+        linear_acceleration.x = sd.gyroIAlignmentCalibrated.data[0];
+        linear_acceleration.y = sd.gyroIAlignmentCalibrated.data[1];
+        linear_acceleration.z = sd.gyroIAlignmentCalibrated.data[2];
+    }
 }
 
 void LpmsIG1::initialize(const std::string& port, uint32_t baudRate=921600)
@@ -174,5 +157,13 @@ void LpmsIG1::initialize(const std::string& port, uint32_t baudRate=921600)
         logd(TAG, "bye\n");
     }
     logd(TAG, "Sensor connected\n");
-    printTask();
+        if (sensor1->getStatus() != STATUS_CONNECTED)
+    {
+        printThreadIsRunning = false;
+        logd(TAG, "Sensor is not connected. Sensor Status: %d\n", sensor1->getStatus());
+        logd(TAG, "printTask terminated\n");
+        return;
+    }
+    printThreadIsRunning = true;
+    sensor1->commandGotoStreamingMode();
 }

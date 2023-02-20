@@ -35,6 +35,7 @@ class LpmsIG1:public IMU
         string TAG;
         std::thread *printThread;
         IG1I* sensor1;
+        IG1ImuDataI sd;
 };
 
 
