@@ -4,7 +4,7 @@ INCLUDE+=-Iimu/LORD-MicroStrain/c++-mscl/Boost/include
 INCLUDE+=-Iimu/LORD-MicroStrain/include
 INCLUDE+=-Iinclude
 #LpmsIG1 头文件搜索路径
-INCLUDE+=-Iimu/lpmsig1opensourcelib
+INCLUDE+=-Iimu/lpmsig1opensourcelib/header
 #指定动态链接库目录
 LIBPATH+=-L./lib
 LIB:=-lmscl
