@@ -5,6 +5,9 @@ INCLUDE+=-Iimu/LORD-MicroStrain/include
 INCLUDE+=-Iinclude
 #LpmsIG1 头文件搜索路径
 INCLUDE+=-Iimu/lpmsig1opensourcelib/header
+#RealSenseD435 头文件搜索路径
+INCLUDE+=-Icamera/realsense/librealsense2
+INCLUDE+=-Icamera/realsense/librealsense2-gl
 #指定动态链接库目录
 LIBPATH+=-L./lib
 LIB:=-lmscl
@@ -12,6 +15,7 @@ LIB+=-lstdc++
 LIB+=-lpthread  #需要多线程库文件
 LIB+=-lLpmsIG1_OpenSourceLib 
 LIB+=-limu
+LIB+=-lrealsense2
 
 
 SRC:=src
