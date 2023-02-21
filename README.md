@@ -1,13 +1,15 @@
 # Sensor-driven-integration
-`main`分支为`release`版本，发布传感器驱动SDK，不包含各种传感器驱动库的源文件，只含封装后的头文件与动态库。     
-`dev`分支为开发分支，包含各传感器的驱动源文件
 # 传感器驱动集成-中间件项目-开发文档
  - `lib`：各类传感器的驱动动态库
  - `include`：二次封装头文件
- - `src`: 二次封装源文件          
+ - `src`: 二次封装源文件 
+ - `CMakeLists.txt`: 编译生成动态库的`CMake版本`，还未完成    
+ - `Makefile`: 编译生成动态库的`Makefile`版本，持续更新中     
 
 现在支持的传感器：     
-`3DMGX5-AHRS`：    
+`3DMGX5-AHRS`：
+  - 动态库编译了两个版本，一个为`ubuntu20.04.5`上编译，一个为`ubuntu18.04`上编译，编译时`gcc`版本不一样导致依赖存在问题，`lib`文件夹下为默认版本-20.04，`18.04`的版本在`others`文件夹下。                     
+
 `LPMS-IG1`：
 ## 姿态传感器
 ### LORD-MicroStrain

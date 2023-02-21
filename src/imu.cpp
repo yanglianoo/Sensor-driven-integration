@@ -67,14 +67,12 @@ void MicroStrain::GetData()
                     //      Other methods (ie. as_float, as_uint16, as_Vector) are also available.
                     //      To determine the format that a dataPoint is stored in, use dataPoint.storedAs().
                     // cout << dataPoint.as_float() << " ";
-
                     //if the dataPoint is invalid
                     if(!dataPoint.valid())
                     {
                         cout << "[Invalid] ";
                     }
                 }
-                cout << endl;
     }
 }
 
@@ -119,12 +117,6 @@ void LpmsIG1::GetData()
         angular_velocity.x = sd.gyroIAlignmentCalibrated.data[0];
         angular_velocity.y = sd.gyroIAlignmentCalibrated.data[1];
         angular_velocity.z = sd.gyroIAlignmentCalibrated.data[2];
-            logd(TAG, "t(s): %.3f acc: %+2.2f %+2.2f %+2.2f gyr: %+3.2f %+3.2f %+3.2f euler: %+3.2f %+3.2f %+3.2f Hz:%3.3f \r\n", 
-        sd.timestamp*0.002f, 
-        linear_acceleration.x , linear_acceleration.y, linear_acceleration.z,
-        angular_velocity.x, angular_velocity.y, angular_velocity.z,
-        sd.euler.data[0], sd.euler.data[1], sd.euler.data[2], 
-        freq);
     }
 }
 
