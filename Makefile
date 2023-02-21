@@ -29,7 +29,7 @@ libimu.so:$(SRC)/imu.cpp
 # 编译生成可执行文件
 .PHONY:main
 main:main.cpp
-	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) -Wl,-rpath=./lib $(CFLAGS)
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) -Wl,-rpath=./lib $(CFLAGS) `pkg-config --cflags --libs opencv4`
 
 .PHONY:clean
 clean:
