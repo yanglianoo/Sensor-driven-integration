@@ -19,8 +19,8 @@ namespace mscl
     //    <WirelessNode>
     class InertialNode : public MipNode
     {
-    private:
-        InertialNode();        //default constructor disabled
+    public:
+        InertialNode(){};        //default constructor disabled
 
     public:
         //API Constructor: InertialNode
@@ -32,7 +32,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A problem occurred with the Connection.
         explicit InertialNode(Connection connection) : MipNode(connection) {};
-
+        
         virtual ~InertialNode() {}
 
 #ifndef SWIG

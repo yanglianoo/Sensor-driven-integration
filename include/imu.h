@@ -7,6 +7,7 @@
 class IMU {
 public:
     virtual void initialize(const std::string& port, uint32_t baudRate) = 0;
+    virtual void GetData()=0;
     struct Vector3 {
         float x;
         float y;
@@ -19,24 +20,28 @@ public:
 
 class MicroStrain:public IMU
 {   
-public:
-    void initialize(const std::string& port, uint32_t baudRate) override ;
-
-private:
-    mscl::Connection connection;
+    public:
+        void GetData() override;
+        void initialize(const std::string& port, uint32_t baudRate) override ;
+        
+    private:
+        mscl::Connection connection;
+        mscl::InertialNode node;
+        
 };
+
 
 class LpmsIG1:public IMU
 {
     public:
-        void printTask();
+        void GetData() override;
         void initialize(const std::string& port, uint32_t baudRate) override ;
     private:
         string TAG;
-        std::thread *printThread;
         IG1I* sensor1;
         IG1ImuDataI sd;
 };
+
 
 
 

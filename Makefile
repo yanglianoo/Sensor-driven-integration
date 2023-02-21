@@ -21,11 +21,11 @@ CFLAGS:= -std=c++11 #c++11
 # 生成liblmu动态库
 .PHONY:libimu.so
 libimu.so:$(SRC)/imu.cpp
-	g++ $(INCLUDE) $<  -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB)
+	g++ $(INCLUDE) $<  -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(CFLAGS)
 # 编译生成可执行文件
 .PHONY:main
 main:main.cpp
-	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) -Wl,-rpath=./lib
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) -Wl,-rpath=./lib $(CFLAGS)
 
 .PHONY:clean
 clean:
