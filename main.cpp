@@ -19,14 +19,14 @@
 
 int main()
 {   
-    Camera* cam = new RealSenseD435();
-    cam->initialize(6);
+    RealSenseD435* cam = new RealSenseD435();
+    cam->initialize(6,1);
     std::cout << cam->device_id << std::endl;
     // IMU* imu = new MicroStrain();
     // imu->initialize("/dev/ttyUSB0",115200);
     // while (true)
     // {
     // }
-    std::cout << " " << std::endl;
+    cam->GetData();
     return 0;
 }
