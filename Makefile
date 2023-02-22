@@ -35,7 +35,7 @@ camera:test_camera.cpp
 
 .PHONY:imu
 imu:test_imu.cpp
-	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) -Wl,-rpath=./lib $(CFLAGS) 
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBU) -Wl,-rpath=./lib $(CFLAGS) 
 
 
 .PHONY:clean
