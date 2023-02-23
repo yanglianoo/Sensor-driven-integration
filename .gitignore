@@ -1,0 +1,9 @@
+
+
+
+
+
+
+lib/libmiddleware.so
+lib/librealsense2.so
+*.out
