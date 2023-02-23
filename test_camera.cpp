@@ -1,13 +1,26 @@
 #include "camera.h"
 #include <iostream>
+// #include <opencv2/opencv.hpp>
+// cv::Mat color;
+// cv::Mat depth;
 int main()
 {   
-    USBCamera cam =  USBCamera();
-    cam.initialize(6);
-    // std::cout << cam->device_id << std::endl;
-    // std::cout << " " << std::endl;
+    Camera *cam =new USBCamera();
+    cam->initialize(0);
+    cam->_getColor();
+    // s
+    // // std::cout << cam->device_id << std::endl;
+    // // std::cout << " " << std::endl;
+    // // return 0;
+    // bool flag = cam->_getColor();
+    // std::cout << "cameara id" << flag<<std::endl;
+    // cv::VideoCapture cap;
+    // cap = cv::VideoCapture(0);
+    // if (!cap.isOpened()) {
+    //     std::cout << "无法打开摄像头" << std::endl;
+    // }
     // return 0;
-    std::cout << "cameara id" << cam.device_id<<std::endl;
+
 }
 
 // #include <librealsense2/rs.hpp>

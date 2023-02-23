@@ -8,7 +8,7 @@
 class Camera
 {
 public:
-    virtual void initialize(const int device, bool depth_need=false) = 0;
+    virtual void initialize(const int device, bool depth_need=0) = 0;
     virtual void getData() = 0;
     virtual bool _getColor();
     cv::VideoCapture cap;

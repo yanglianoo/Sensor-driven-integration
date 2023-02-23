@@ -53,7 +53,7 @@ bool RealSenseD435::_getDepth(){
     return true;
 }
 
-void USBCamera::initialize(const int device, bool need_depth)
+void USBCamera::initialize(const int device, bool need_depth=false)
 {
     cap = VideoCapture(device);
     if (!cap.isOpened()) {
