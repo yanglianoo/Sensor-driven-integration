@@ -1,76 +1,69 @@
 #include "camera.h"
 #include <iostream>
-#include <librealsense2/rs.hpp>
-
 
 using namespace std;
 using namespace cv;
 
+bool Camera::_getColor(){
+    cap.read(color);
 
-void Camera::GetData()
+    if (color.empty()) {
+        cout << "Can't get the camera content!" << endl;
+        return false;
+    }
+    return true;
+}
+
+
+void RealSenseD435::getData()
 {
-    VideoCapture cap(device_id);
 
+    if (!_getColor()){
+        cout << "Get color info error!" << endl;
+    }    
+
+    if (is_depth && !_getDepth()){
+        cout << "Get depth info error!" << endl;
+    }
+}
+
+void RealSenseD435::initialize(const int device, bool depth_need)
+{
+    cap = VideoCapture(device);
     if (!cap.isOpened()) {
         cout << "无法打开摄像头" << endl;
         return;
     }
 
-    // namedWindow("frame", WINDOW_NORMAL);
+    is_depth = depth_need;
+}
 
-    // 读取摄像头帧并保存到 Mat 对象中
-    while (true) {
-        cap.read(data);
-        // cout << data << endl;
-
-        if (data.empty()) {
-            cout << "无法获取摄像头帧" << endl;
-            break;
-        }
-
-        // 在这里可以对每一帧数据进行处理
-
-        // imshow("frame", data);
-
-        if (waitKey(1) == 'q') {
-            break;
-        }
-
-        // if (type == 1 && this->is_depth == true){
-        //     this->GetDepth();
-        // }
-    }
-
-    cap.release();
-    // destroyAllWindows();
+bool RealSenseD435::_getDepth(){
+    // rs2::pipeline p;
+    // p.start();
+    // rs2::frameset frames = p.wait_for_frames();
+    // rs2::depth_frame depth = frames.get_depth_frame();
+    // float width = depth.get_width();
+    // float height = depth.get_height();
+    // float dist_to_center = depth.get_distance(width / 2, height / 2);
+    // std::cout << "The camera is facing an object " << dist_to_center << " meters away \r";
+    cout << "get depth info "  << endl;
     
-
+    depth.zeros(3,3,CV_32F);
+    return true;
 }
 
-void RealSenseD435::initialize(const int device, bool is_depth)
+void USBCamera::initialize(const int device, bool need_depth)
 {
-    device_id = device;
-    type = 1;
-    this->is_depth = is_depth;
+    cap = VideoCapture(device);
+    if (!cap.isOpened()) {
+        cout << "无法打开摄像头" << endl;
+        return;
+    }
 }
 
-void RealSenseD435::GetDepth(){
-    rs2::pipeline p;
-    p.start();
-    rs2::frameset frames = p.wait_for_frames();
-    rs2::depth_frame depth = frames.get_depth_frame();
-    float width = depth.get_width();
-    float height = depth.get_height();
-    float dist_to_center = depth.get_distance(width / 2, height / 2);
-    std::cout << "The camera is facing an object " << dist_to_center << " meters away \r";
-
-
-
-    std::cout << "okk" << std::endl; 
-}
-
-void USBCamera::initialize(const int device)
-{
-    device_id = device;
-    type = 0;
+void USBCamera::getData(){
+    if (!_getColor()){
+        cout << "Get color info error!" << endl;
+    }   
 }

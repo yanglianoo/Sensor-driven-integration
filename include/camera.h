@@ -8,25 +8,27 @@
 class Camera
 {
 public:
-    virtual void initialize(const int device){};
-    virtual void GetData();
-    int device_id; //设备id
-    int type; //设备类型目前只有两种：0:usb摄像头 1:realsense
-    cv::Mat data;
+    virtual void initialize(const int device, bool depth_need=false) = 0;
+    virtual void getData() = 0;
+    virtual bool _getColor();
+    cv::VideoCapture cap;
+    cv::Mat color;
+    cv::Mat depth;
 };
 
 class RealSenseD435 : public Camera
 {
 public:
-    void initialize(const int device, bool is_depth);
-    void GetDepth();
+    void initialize(const int device, bool depth_need) override;
+    void getData() override;
+    bool _getDepth();
 private:
     bool is_depth;
-    cv::Mat depth;
 };
 
 class USBCamera : public Camera
 {
 public:
-    void initialize(const int device) override;
+    void initialize(const int device, bool depth_need) override;
+    void getData() override;
 };
