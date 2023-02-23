@@ -9,9 +9,14 @@ INCLUDE+=-Icamera/realsense
 # 二次封装头文件搜索路径
 INCLUDE+=-Iinclude
 #指定动态链接库目录
-LIBPATH=-L./lib
+LIBPATH:=-L./lib
+# boost 1.68.0
+LIBPATH+=-L./imu/LORD-MicroStrain/c++-mscl/Boost/lib
+
 LIB:=-lmscl
 LIB+=-lstdc++
+LIB+=-lboost_system
+LIB+=-lboost_filesystem
 LIB+=-lpthread  #需要多线程库文件
 LIB+=-lLpmsIG1_OpenSourceLib 
 LIB+=-lrealsense2
@@ -31,17 +36,19 @@ libmiddleware.so:$(SRC)/*.cpp
 # 编译生成可执行文件
 .PHONY:camera
 camera:test_camera.cpp
-	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBU) -Wl,-rpath=./lib $(CFLAGS)  `pkg-config --cflags --libs opencv4`
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBU)  $(CFLAGS)  `pkg-config --cflags --libs opencv4`
 
 .PHONY:imu
 imu:test_imu.cpp
-	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBU) -Wl,-rpath=./lib $(CFLAGS) 
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBU)  $(CFLAGS) `pkg-config --cflags --libs opencv4`
 
 
 .PHONY:clean
 clean:
 	rm -rf *.out *.so 
 	rm -rf main
+	rm -rf test_camera
+
 
 	
 
