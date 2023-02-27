@@ -4,9 +4,12 @@
  - `include`：二次封装头文件
  - `src`: 二次封装源文件 
  - `CMakeLists.txt`: 编译生成动态库的`CMake版本`，还未完成    
- - `Makefile`: 编译生成动态库的`Makefile`版本，持续更新中     
+ - `Makefile`: 编译生成动态库的`Makefile`版本，持续更新中
+ - `setup.bash`:在运行测试程序前，用于指定运行时动态库搜寻路径`source setup.bash`              
 
-现在支持的传感器：     
+其他依赖库：
+ - Opencv4.6
+## 现在支持的传感器：     
 `3DMGX5-AHRS`：
   - 动态库编译了两个版本，一个为`ubuntu20.04.5`上编译，一个为`ubuntu18.04`上编译，编译时`gcc`版本不一样导致依赖存在问题，`lib`文件夹下为默认版本-20.04，`18.04`的版本在`others`文件夹下。
   - `LORD-MicroStrain`需要的boost库是官方编译的1.68.0版本，因此在编译和链接时需要手动指定头文件路径和动态库搜寻路径到`LORD-MicroStrain/c++-mscl/Boost`下。              
