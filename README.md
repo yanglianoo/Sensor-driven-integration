@@ -8,9 +8,14 @@
 
 现在支持的传感器：     
 `3DMGX5-AHRS`：
-  - 动态库编译了两个版本，一个为`ubuntu20.04.5`上编译，一个为`ubuntu18.04`上编译，编译时`gcc`版本不一样导致依赖存在问题，`lib`文件夹下为默认版本-20.04，`18.04`的版本在`others`文件夹下。                     
+  - 动态库编译了两个版本，一个为`ubuntu20.04.5`上编译，一个为`ubuntu18.04`上编译，编译时`gcc`版本不一样导致依赖存在问题，`lib`文件夹下为默认版本-20.04，`18.04`的版本在`others`文件夹下。
+  - `LORD-MicroStrain`需要的boost库是官方编译的1.68.0版本，因此在编译和链接时需要手动指定头文件路径和动态库搜寻路径到`LORD-MicroStrain/c++-mscl/Boost`下。              
 
-`LPMS-IG1`：
+`LPMS-IG1`:  
+ - 无bug
+
+`D435I`:
+ - 官方提供的SDK编译完成后会生成`librealsense2.so.2.53`和`librealsense2.so`,其中`librealsense2.so`是`librealsense2.so.2.53`的软链接
 ## 姿态传感器
 ### LORD-MicroStrain
 > 官网：https://www.microstrain.com/inertial-sensors/3dm-gx5-25   
