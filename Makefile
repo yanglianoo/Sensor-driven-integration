@@ -13,25 +13,35 @@ LIBPATH:=-L./lib
 # boost 1.68.0
 LIBPATH+=-L./imu/LORD-MicroStrain/c++-mscl/Boost/lib
 
-LIB:=-lmscl
-LIB+=-lstdc++
-LIB+=-lboost_system
-LIB+=-lboost_filesystem
+# imu的动态库
+LIBimu:=-lmscl
+LIBimu+=-lLpmsIG1_OpenSourceLib 
+LIBimu+=-lboost_system
+LIBimu+=-lboost_filesystem
+
+# camera的动态库
+LIBcameara:=-lrealsense2
+
+# c++其他标准库
+LIB:=-lstdc++
 LIB+=-lpthread  #需要多线程库文件
-LIB+=-lLpmsIG1_OpenSourceLib 
-LIB+=-lrealsense2
 #二次封装后的动态库名字
-LIBU=-lmiddleware
+LIBU:=-lmiddleware
 
 
 SRC:=src
 
 CFLAGS:= -std=c++11 #c++11
+# 生成libimu.so动态库
+.PHONY:libimu.so
+libimu.so:$(SRC)/imu.cpp	
+	g++ $(INCLUDE) $^ -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(LIBimu) $(CFLAGS)
+
 
 # 生成libmiddleware动态库
 .PHONY:libmiddleware.so
 libmiddleware.so:$(SRC)/*.cpp
-	g++ $(INCLUDE) $^ -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(CFLAGS)
+	g++ $(INCLUDE) $^ -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(LIBimu) $(LIBcameara) $(CFLAGS)
 
 # 编译生成可执行文件
 .PHONY:camera
@@ -40,7 +50,7 @@ camera:test_camera.cpp
 
 .PHONY:imu
 imu:test_imu.cpp
-	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBU)  $(CFLAGS) `pkg-config --cflags --libs opencv4`
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBimu)  $(CFLAGS) 
 
 
 .PHONY:clean
