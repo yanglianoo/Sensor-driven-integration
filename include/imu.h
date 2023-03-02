@@ -8,6 +8,7 @@ class IMU {
 public:
     virtual void initialize(const std::string& port, uint32_t baudRate) = 0;
     virtual void GetData()=0;
+    
     struct Vector3 {
         float x;
         float y;
