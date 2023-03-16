@@ -66,7 +66,7 @@ imu:test_imu.cpp
 
 .PHONY:clean
 clean:
-	rm -rf *.out *.so 
+	rm -rf *.out 
 	rm -rf main
 	rm -rf test_camera
 

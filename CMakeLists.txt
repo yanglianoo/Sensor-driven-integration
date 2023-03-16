@@ -7,6 +7,10 @@ set(CMAKE_BUILD_TYPE Release)
 # Define a variable named "flags"
 set(flags "imu" CACHE STRING "Compilation flags")
 
+# 二次封装头文件搜索路径
+include_directories("include")
+link_directories(${PROJECT_SOURCE_DIR}/lib)
+
 # Check the value of "flags" variable and compile accordingly
 if(flags STREQUAL "imu")
     # 编译imu的动态库
@@ -16,11 +20,8 @@ if(flags STREQUAL "imu")
     include_directories("imu/LORD-MicroStrain/include")
     include_directories("imu/lpmsig1opensourcelib/header")
 
-    # 二次封装头文件搜索路径
-    include_directories("include")
 
     #动态库路径
-    link_directories(${PROJECT_SOURCE_DIR}/lib)
     link_directories(${PROJECT_SOURCE_DIR}/imu/LORD-MicroStrain/c++-mscl/Boost/lib)
     #添加源文件
     add_library(imu SHARED src/imu.cpp)
@@ -34,10 +35,7 @@ elseif(flags STREQUAL "camera")
     set(OpenCV_DIR /usr/local/include/opencv4)
     # 编译camera的动态库
     include_directories("camera/realsense")
-    # 二次封装头文件搜索路径
-    include_directories("include")
-    #动态库路径
-    link_directories(${PROJECT_SOURCE_DIR}/lib)
+
     #添加源文件
     add_library(camera SHARED src/camera.cpp)
 

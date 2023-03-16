@@ -3,11 +3,29 @@
  - `lib`：各类传感器的驱动动态库
  - `include`：二次封装头文件
  - `src`: 二次封装源文件 
- - `CMakeLists.txt`: 编译生成动态库的`CMake版本`，还未完成    
+ - `CMakeLists.txt`: 编译生成动态库的`CMake版本`，持续更新中
  - `Makefile`: 编译生成动态库的`Makefile`版本，持续更新中
- - `setup.bash`:在运行测试程序前，用于指定运行时动态库搜寻路径`source setup.bash`              
+ - `setup.bash`:在运行测试程序前，用于指定运行时动态库搜寻路径`source setup.bash`         
 
-其他依赖库：
+       
+编译：    
+ - `Makefile`:  支持编译生成动态库和可执行的测试文件     
+    ```bash
+    <!-- 第一步编译生成对应动态库 -->
+    make libimu.so        
+    make libcamera.so
+    <!-- 第二步编译生成测试文件 -->
+    make imu
+    make camera
+    ```
+ - `CMakeLists`: 只支持编译生成动态库   
+    ```bash
+    <!-- 默认编译生成 imu 的动态库，换camera时需要更改CMakeLists中 flags变量的值  -->
+    mkdir build && cd build
+    cmake ..
+    ```
+
+第三方依赖库：
  - Opencv4.6
 ## 现在支持的传感器：     
 `3DMGX5-AHRS`：
