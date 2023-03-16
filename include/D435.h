@@ -1,5 +1,5 @@
 #pragma
-#include <librealsense2/rs.hpp>
+#include <../realsense/librealsense2/rs.hpp>
 #include <opencv2/opencv.hpp>
 
 class Camera {
