@@ -24,7 +24,12 @@
     mkdir build && cd build
     cmake ..
     ```
-
+运行：
+   ```bash
+      source setup.bash
+      ./imu.out
+      ./camera.out
+   ```
 第三方依赖库：
  - Opencv4.6
 ## 现在支持的传感器：     
