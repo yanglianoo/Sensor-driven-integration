@@ -26,6 +26,7 @@ LIBimu+=-lboost_filesystem
 LIBcamera:=-lrealsense2
 
 #laser的库文件
+LIBlaser:=-lsl_lidar_sdk
 
 # c++其他标准库
 LIB:=-lstdc++
@@ -53,6 +54,7 @@ libcamera.so:$(SRC)/camera.cpp
 # 生成liblaser.so动态库
 .PHONY:liblaser.so
 liblaser.so:$(SRC)/laser.cpp
+	g++ $(INCLUDE) $^ -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(LIBlaser) $(CFLAGS)
 
 
 # # 生成libmiddleware动态库  感觉没必要将 imu 和 camera 打包在一起
@@ -74,7 +76,7 @@ imu:test_imu.cpp
 
 .PHONY:laser
 laser:test_laser.cpp
-	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) -lsl_lidar_sdk $(CFLAGS) 
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBlaser) -llaser $(CFLAGS) 
 
 .PHONY:clean
 clean:
