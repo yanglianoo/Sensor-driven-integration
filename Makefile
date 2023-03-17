@@ -6,6 +6,9 @@ INCLUDE+=-Iimu/LORD-MicroStrain/include
 INCLUDE+=-Iimu/lpmsig1opensourcelib/header
 #RealSenseD435 头文件搜索路径
 INCLUDE+=-Icamera/realsense
+
+#思岚S1头文件路径
+INCLUDE+=-Ilaser/rplidar_sdk-master/sdk/include
 # 二次封装头文件搜索路径
 INCLUDE+=-Iinclude
 #指定动态链接库目录
@@ -21,6 +24,8 @@ LIBimu+=-lboost_filesystem
 
 # camera的动态库
 LIBcamera:=-lrealsense2
+
+#laser的库文件
 
 # c++其他标准库
 LIB:=-lstdc++
@@ -45,12 +50,15 @@ libcamera.so:$(SRC)/camera.cpp
 	g++ $(INCLUDE) $^ -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(LIBcamera) $(CFLAGS)
 
 
+# 生成liblaser.so动态库
+.PHONY:liblaser.so
+liblaser.so:$(SRC)/laser.cpp
 
 
-# 生成libmiddleware动态库  感觉没必要将 imu 和 camera 打包在一起
-.PHONY:libmiddleware.so
-libmiddleware.so:$(SRC)/*.cpp
-	g++ $(INCLUDE) $^ -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(LIBimu) $(LIBcameara) $(CFLAGS)
+# # 生成libmiddleware动态库  感觉没必要将 imu 和 camera 打包在一起
+# .PHONY:libmiddleware.so
+# libmiddleware.so:$(SRC)/*.cpp
+# 	g++ $(INCLUDE) $^ -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(LIBimu) $(LIBcameara) $(CFLAGS)
 
 
 
@@ -63,6 +71,10 @@ camera:test_camera.cpp
 .PHONY:imu
 imu:test_imu.cpp
 	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBimu) -limu $(CFLAGS) 
+
+.PHONY:laser
+laser:test_laser.cpp
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) -lsl_lidar_sdk $(CFLAGS) 
 
 .PHONY:clean
 clean:
