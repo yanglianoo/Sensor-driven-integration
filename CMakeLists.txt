@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE Release)
 
 # Define a variable named "flags"
-set(flags "imu" CACHE STRING "Compilation flags")
+set(flags "laser" CACHE STRING "Compilation flags")
 
 # 二次封装头文件搜索路径
 include_directories("include")
@@ -40,6 +40,16 @@ elseif(flags STREQUAL "camera")
     add_library(camera SHARED src/camera.cpp)
 
     target_link_libraries(camera realsense2 ${OpenCV_LIBS})
+elseif(flags STREQUAL "laser")
+
+    # 编译camera的动态库
+    
+    include_directories("laser/rplidar_sdk-master/sdk/include")
+
+    #添加源文件
+    add_library(laser SHARED src/laser.cpp)
+
+    target_link_libraries(laser pthread sl_lidar_sdk)
 else()
     # Invalid value for "flags" variable
     message(FATAL_ERROR "Invalid value for flags: ${flags}")
