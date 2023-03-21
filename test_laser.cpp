@@ -24,7 +24,7 @@
  *
  */
 
-#include <stdio.h>
+/* #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>
@@ -297,6 +297,19 @@ on_finished:
     if(drv) {
         delete drv;
         drv = NULL;
+    }
+    return 0;
+}
+ */
+#include "laser.h"
+
+int main()
+{
+    lidar* laser = new SL_lidar();
+    laser->init("/dev/ttyUSB0",256000);
+    while(1)
+    {
+        laser->get_data();
     }
     return 0;
 }
