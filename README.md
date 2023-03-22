@@ -5,9 +5,20 @@
  - `src`: 二次封装源文件 
  - `CMakeLists.txt`: 编译生成动态库的`CMake版本`，持续更新中
  - `Makefile`: 编译生成动态库的`Makefile`版本，持续更新中
- - `setup.bash`:在运行测试程序前，用于指定运行时动态库搜寻路径`source setup.bash`         
+ - `setup.bash`: 在运行测试程序前，用于指定运行时动态库搜寻路径`source setup.bash`      
+ - `Dockerfile`: `docker`镜像创建文件   
 
-       
+
+`Docker`构建:
+   ```bash
+      <!-- 第一步构建镜像 -->
+      docker build -t sensordriver .
+      <!-- 第二步启动镜像 -->
+      docker run -it --device=/dev/ttyUSB0 sensordriver
+      <!-- 第三步编译运行 -->
+   ```
+
+
 编译：    
  - `Makefile`:  支持编译生成动态库和可执行的测试文件     
     ```bash
@@ -43,6 +54,8 @@
 
 `D435I`:
  - 官方提供的SDK编译完成后会生成`librealsense2.so.2.53`和`librealsense2.so`,其中`librealsense2.so`是`librealsense2.so.2.53`的软链接
+
+`思岚s1`:
 ## 姿态传感器
 ### LORD-MicroStrain
 > 官网：https://www.microstrain.com/inertial-sensors/3dm-gx5-25   
