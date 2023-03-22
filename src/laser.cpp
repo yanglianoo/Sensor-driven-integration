@@ -1,25 +1,19 @@
 #include "laser.h"
-using namespace std;
+#ifndef _countof
+#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
+#endif
 
- SL_lidar::SL_lidar(){
-    opt_is_channel = NULL; 
-    opt_channel = NULL;
-    opt_channel_param_first = NULL;
-	opt_channel_param_second = 0;
-    baudrateArray[2] = {115200, 256000};
-	opt_channel_type = sl::CHANNEL_TYPE_SERIALPORT;
+#include <unistd.h>
+static inline void delay(sl_word_size_t ms){
+    while (ms>=1000){
+        usleep(1000*1000);
+        ms-=1000;
+    };
+    if (ms!=0)
+        usleep(ms*1000);
 }
 
-void SL_lidar::print_usage(){
-    printf("Simple LIDAR data grabber for SLAMTEC LIDAR.\n"
-           "Version: %s \n"
-           "Usage:\n"
-           " For serial channel %s --channel --serial <com port> [baudrate]\n"
-           "The baudrate is 115200(for A2) or 256000(for A3).\n"
-		   " For udp channel %s --channel --udp <ipaddr> [port NO.]\n"
-           "The LPX default ipaddr is 192.168.11.2,and the port NO.is 8089. Please refer to the datasheet for details.\n"
-           , "SL_LIDAR_SDK_VERSION", argv[0], argv[0]);
-}
+
 
 void SL_lidar::ctrlc(int)
 {
@@ -27,17 +21,23 @@ void SL_lidar::ctrlc(int)
 }
 
 void SL_lidar::init(const char* port,sl_u32 baudrate){
+    opt_is_channel = NULL; 
+    opt_channel = NULL;
+    opt_channel_param_first = NULL;
+	opt_channel_param_second = 0;
+ 	opt_channel_type = sl::CHANNEL_TYPE_SERIALPORT;
     opt_channel_param_first = port;
-    opt_channel_param_second = strtoul(baudrate,NULL,10);
+    // opt_channel_param_second = strtoul(baudrate,NULL,10);
+    opt_channel_param_second = baudrate;
     if(!opt_channel_param_first){
         opt_channel_param_first = "/dev/ttyUSB0";
     }
-    ILidarDriver * drv = *createLidarDriver();
+    drv = *createLidarDriver();
     if (!drv) {
         fprintf(stderr, "insufficent memory, exit\n");
         exit(-2);
     }
-    _channel = (*createSerialPortChannel(opt_channel_param_first,opt_channel_param_secondd));
+    _channel = (*createSerialPortChannel(opt_channel_param_first,opt_channel_param_second));
     if (SL_IS_OK((drv)->connect(_channel))) {
         op_result = drv->getDeviceInfo(devinfo);
 
@@ -56,7 +56,7 @@ void SL_lidar::init(const char* port,sl_u32 baudrate){
 				, opt_channel_param_first)):(fprintf(stderr, "Error, cannot connect to the specified ip addr %s.\n"
 				, opt_channel_param_first));
 		
-        goto on_finished;
+        //goto on_finished;
     }
 
     // print out the device serial number, firmware and hardware version number..
@@ -71,16 +71,24 @@ void SL_lidar::init(const char* port,sl_u32 baudrate){
             , devinfo.firmware_version>>8
             , devinfo.firmware_version & 0xFF
             , (int)devinfo.hardware_version);
+
+
  }
 void SL_lidar::get_data(){
-    drv->setMotorSpeed();
-    drv->startscan(0,1);
+    if (!drv) {
+        fprintf(stderr, "insufficent memory, exit\n");
+        exit(-2);
+    }
+    if(opt_channel_type == CHANNEL_TYPE_SERIALPORT)
+        drv->setMotorSpeed();
+    // start scan...
+    drv->startScan(0,1);
     while (1) {
         sl_lidar_response_measurement_node_hq_t nodes[8192];
         size_t   count = _countof(nodes);
 
-        op_result = drv->grabScanDataHq(nodes, count);
-
+      op_result = drv->grabScanDataHq(nodes, count);
+          
         if (SL_IS_OK(op_result)) {
             drv->ascendScanData(nodes, count);
             for (int pos = 0; pos < (int)count ; ++pos) {

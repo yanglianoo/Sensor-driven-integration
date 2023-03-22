@@ -307,9 +307,8 @@ int main()
 {
     lidar* laser = new SL_lidar();
     laser->init("/dev/ttyUSB0",256000);
-    while(1)
-    {
-        laser->get_data();
-    }
+    
+    laser->get_data();
+    
     return 0;
 }
