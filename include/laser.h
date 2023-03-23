@@ -14,7 +14,7 @@ class lidar
 public:
     virtual void init(const char* port, sl_u32 baudRate) = 0;
     virtual void get_data() = 0;
-
+    virtual ~lidar() {}
 };
 
 

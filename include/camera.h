@@ -7,6 +7,8 @@ public:
     virtual void initialize(const int device, int width=640, int height=480, int fps=30, bool enable_depth=false) = 0;
     virtual void getData() = 0;
 
+    virtual ~Camera() {}
+    
     int width_;
     int height_;
     int fps_;
