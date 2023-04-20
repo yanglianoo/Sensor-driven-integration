@@ -78,11 +78,15 @@ imu:test_imu.cpp
 laser:test_laser.cpp
 	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBlaser) -llaser $(CFLAGS) 
 
+
+.PHONY:udev
+udev:udev_monitor.c
+	gcc $< -o $@.out `pkg-config --libs --cflags libudev`
+
 .PHONY:clean
 clean:
 	rm -rf *.out 
-	rm -rf main
-	rm -rf test_camera
+	rm build
 
 
 	
