@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            // 配置vscdoe头文件搜素目录
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/include/opencv4"
+            ],
+        }
+    ],
+    "version": 4
+}

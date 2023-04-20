@@ -48,7 +48,7 @@ libimu.so:$(SRC)/imu.cpp
 # 生成libcamera.so动态库
 .PHONY:libcamera.so
 libcamera.so:$(SRC)/camera.cpp	
-	g++ $(INCLUDE) $^ -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(LIBcamera) $(CFLAGS)
+	g++ $(INCLUDE) $^ -fPIC -shared -o ./lib/$@ $(LIBPATH) $(LIB) $(LIBcamera) $(CFLAGS) `pkg-config --cflags --libs opencv4`
 
 
 # 生成liblaser.so动态库
