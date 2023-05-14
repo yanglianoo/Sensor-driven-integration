@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mscl/mscl.h"
+#include "../c++-mscl/source/mscl/mscl.h"
 using namespace std;
 //Example: Get Current Configuration
 //  Shows how to read current configuration settings an Inertial Device.

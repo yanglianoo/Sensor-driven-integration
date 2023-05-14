@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mscl/mscl.h"
+#include "../c++-mscl/source/mscl/mscl.h"
 using namespace std;
 //Example: Parse Data
 //  Shows how to parse incoming data from an Inertial Device.

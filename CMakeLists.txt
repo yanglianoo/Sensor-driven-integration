@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE Release)
 
 # Define a variable named "flags"
-set(flags "laser" CACHE STRING "Compilation flags")
+set(flags "imu" CACHE STRING "Compilation flags")
 
 # 二次封装头文件搜索路径
 include_directories("include")
@@ -16,11 +16,6 @@ if(flags STREQUAL "imu")
     # 编译imu的动态库
     # imu的头文件路径
     include_directories("imu/LORD-MicroStrain/c++-mscl/source")
-    include_directories("imu/LORD-MicroStrain/c++-mscl/Boost/include")
-    include_directories("imu/LORD-MicroStrain/include")
-    include_directories("imu/lpmsig1opensourcelib/header")
-
-
     #动态库路径
     link_directories(${PROJECT_SOURCE_DIR}/imu/LORD-MicroStrain/c++-mscl/Boost/lib)
     #添加源文件

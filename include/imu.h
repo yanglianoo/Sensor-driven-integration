@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 // #include "MicroStrain.h"
+#include "../imu/LORD-MicroStrain/include/MicroStrain.h"
 #include "../imu/lpmsig1opensourcelib/header/LpmsIG1.h"
 #include <iostream>
 #include <string>
@@ -20,17 +21,17 @@ public:
 };
 
 
-// class MicroStrain:public IMU
-// {   
-//     public:
-//         void GetData() override;
-//         void initialize(const std::string& port, uint32_t baudRate) override ;
+class MicroStrain:public IMU
+{   
+    public:
+        void GetData() override;
+        void initialize(const std::string& port, uint32_t baudRate) override ;
         
-//     private:
-//         mscl::Connection connection;
-//         mscl::InertialNode node;
+    private:
+        mscl::Connection connection;
+        mscl::InertialNode node;
         
-// };
+};
 
 
 class LpmsIG1:public IMU

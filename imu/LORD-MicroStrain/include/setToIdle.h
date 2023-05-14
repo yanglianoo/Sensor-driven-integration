@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mscl/mscl.h"
+#include "../c++-mscl/source/mscl/mscl.h"
 
 static void setToIdle(mscl::InertialNode& node)
 {

@@ -1,15 +1,5 @@
 #LORD-MicroStrain头文件搜索路径
 INCLUDE:=-Iimu/LORD-MicroStrain/c++-mscl/source 
-INCLUDE+=-Iimu/LORD-MicroStrain/c++-mscl/Boost/include
-INCLUDE+=-Iimu/LORD-MicroStrain/include
-#LpmsIG1 头文件搜索路径
-INCLUDE+=-Iimu/lpmsig1opensourcelib/header
-#RealSenseD435 头文件搜索路径
-INCLUDE+=-Icamera/realsense
-
-#思岚S1头文件路径
-INCLUDE+=-Ilaser/rplidar_sdk-master/sdk/include
-# 二次封装头文件搜索路径
 INCLUDE+=-Iinclude
 #指定动态链接库目录
 LIBPATH:=-L./lib
@@ -81,7 +71,7 @@ laser:test_laser.cpp
 
 .PHONY:imu
 imu:test_imu.cpp
-	g++ -Iinclude  $< -o $@.out $(LIBPATH) $(LIB) $(LIBimu) -limu $(CFLAGS) 
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBimu) -limu $(CFLAGS) 
 
 .PHONY:udev
 udev:udev_monitor.c
