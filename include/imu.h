@@ -1,8 +1,9 @@
 #pragma once
 #include <stdint.h>
-#include "MicroStrain.h"
-#include "LpmsIG1.h"
-
+// #include "MicroStrain.h"
+#include "../imu/lpmsig1opensourcelib/header/LpmsIG1.h"
+#include <iostream>
+#include <string>
 
 class IMU {
 public:
@@ -19,17 +20,17 @@ public:
 };
 
 
-class MicroStrain:public IMU
-{   
-    public:
-        void GetData() override;
-        void initialize(const std::string& port, uint32_t baudRate) override ;
+// class MicroStrain:public IMU
+// {   
+//     public:
+//         void GetData() override;
+//         void initialize(const std::string& port, uint32_t baudRate) override ;
         
-    private:
-        mscl::Connection connection;
-        mscl::InertialNode node;
+//     private:
+//         mscl::Connection connection;
+//         mscl::InertialNode node;
         
-};
+// };
 
 
 class LpmsIG1:public IMU
@@ -38,7 +39,7 @@ class LpmsIG1:public IMU
         void GetData() override;
         void initialize(const std::string& port, uint32_t baudRate) override ;
     private:
-        string TAG;
+        std::string TAG;
         IG1I* sensor1;
         IG1ImuDataI sd;
 };

@@ -70,14 +70,18 @@ liblaser.so:$(SRC)/laser.cpp
 camera:test_camera.cpp
 	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBcamera) -lcamera $(CFLAGS)  `pkg-config --cflags --libs opencv4`
 
-.PHONY:imu
-imu:test_imu.cpp
-	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBimu) -limu $(CFLAGS) 
+# .PHONY:imu
+# imu:test_imu.cpp
+# 	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBimu) -limu $(CFLAGS) 
 
 .PHONY:laser
 laser:test_laser.cpp
 	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBlaser) -llaser $(CFLAGS) 
 
+
+.PHONY:imu
+imu:test_imu.cpp
+	g++ -Iinclude  $< -o $@.out $(LIBPATH) $(LIB) $(LIBimu) -limu $(CFLAGS) 
 
 .PHONY:udev
 udev:udev_monitor.c

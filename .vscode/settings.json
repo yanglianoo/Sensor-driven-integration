@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.ipp": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "string": "cpp"
     }
 }

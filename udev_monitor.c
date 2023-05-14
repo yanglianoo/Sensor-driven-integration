@@ -3,6 +3,20 @@
  * @brief: 串口 usb 网络设备 插拔检测
  * @date: 2023.4.20
 */
+
+//设备描述结构体定义
+typedef struct DeviceInfo {
+    char dev_node[64];    // 设备节点路径
+    char dev_name[64];    // 设备名称
+    char dev_type[64];    // 设备类型
+    char driver[64];      // 设备使用的驱动程序
+    char vendor_id[16];   // 设备制造商ID
+    char product_id[16];  // 设备产品ID
+    char serial[64];      // 设备序列号
+    // 其他设备属性可以继续添加
+} DeviceInfo;
+
+
 #include <stdio.h>
 #include <libudev.h>
 
