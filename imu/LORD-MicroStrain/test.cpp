@@ -1,7 +1,7 @@
 #include <iostream>
 #include "mscl/mscl.h"
 #include <vector>
-#include "include/MicroStrain.h"
+#include "MicroStrain.h"
 using namespace std;
 using namespace mscl;
 int main()

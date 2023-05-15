@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../c++-mscl/source/mscl/mscl.h"
+#include "c++-mscl/source/mscl/mscl.h"
 
 static void setCurrentConfig(mscl::InertialNode& node)
 {
@@ -17,7 +17,7 @@ static void setCurrentConfig(mscl::InertialNode& node)
         
         //apply to the node
         node.setActiveChannelFields(mscl::MipTypes::CLASS_AHRS_IMU, ahrsImuChs);
-        cout<<"AHRS/IMU setconfig success!"<<endl;
+        std::cout<<"AHRS/IMU setconfig success!"<<std::endl;
     }
 
     //if the node supports Estimation Filter
@@ -28,7 +28,7 @@ static void setCurrentConfig(mscl::InertialNode& node)
 
         //apply to the node
         node.setActiveChannelFields(mscl::MipTypes::CLASS_ESTFILTER, estFilterChs);
-        cout<<"Estimation Filter setconfig success!"<<endl;
+        std::cout<<"Estimation Filter setconfig success!"<<std::endl;
     }
 
     // //if the node supports GNSS 不支持

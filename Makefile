@@ -1,6 +1,6 @@
 #LORD-MicroStrain头文件搜索路径
 INCLUDE:=-Iimu/LORD-MicroStrain/c++-mscl/source 
-INCLUDE+=-Iinclude
+INCLUDE+=-Isensor_driver
 #指定动态链接库目录
 LIBPATH:=-L./lib
 # boost 1.68.0
@@ -80,7 +80,7 @@ udev:udev_monitor.c
 .PHONY:clean
 clean:
 	rm -rf *.out 
-	rm build
+	rm -rf build
 
 
 	
