@@ -20,6 +20,7 @@ class Sensor_monitor
 {
 
 public:
+    //实现设备热插拔检测，并更新设备管理信息
     int Sensor_monitor_thread();
 };
 

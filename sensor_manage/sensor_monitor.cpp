@@ -1,9 +1,4 @@
-/**
- * @author:timer
- * @brief: 串口 usb 网络设备 插拔检测
- * @date: 2023.4.20
-*/
-#include "udev_monitor.hpp"
+#include "sensor_monitor.hpp"
 
 int Sensor_monitor::Sensor_monitor_thread()
 {
@@ -35,6 +30,17 @@ int Sensor_monitor::Sensor_monitor_thread()
     udev_monitor_filter_add_match_subsystem_devtype(tty_mon, "tty", NULL);
     udev_monitor_enable_receiving(tty_mon);
 
+    // 视频设备监听器
+    struct udev_monitor *video_mon = udev_monitor_new_from_netlink(udev, "udev");
+    if (!video_mon) {
+        printf("Failed to create udev monitor for video devices.\n");
+        udev_unref(udev);
+        return 1;
+    }
+    udev_monitor_filter_add_match_subsystem_devtype(video_mon, "video4linux", NULL);
+    udev_monitor_enable_receiving(video_mon);
+
+
     // 网络设备监听器
     struct udev_monitor *net_mon = udev_monitor_new_from_netlink(udev, "udev");
     if (!net_mon) {
@@ -54,9 +60,10 @@ int Sensor_monitor::Sensor_monitor_thread()
         FD_SET(udev_monitor_get_fd(usb_mon), &fds);
         FD_SET(udev_monitor_get_fd(tty_mon), &fds);
         FD_SET(udev_monitor_get_fd(net_mon), &fds);
+        FD_SET(udev_monitor_get_fd(video_mon), &fds);
+        int max_fd = udev_monitor_get_fd(video_mon) + 1;
 
-        int max_fd = udev_monitor_get_fd(net_mon) + 1;
-        //判断 读缓冲区是否有有数据，如果有数据进行，数据
+        //判断 读缓冲区是否有有数据，如果有数据进行数据解析
         int ret = select(max_fd, &fds, NULL, NULL, NULL);
 
         if (ret > 0) {
@@ -68,6 +75,44 @@ int Sensor_monitor::Sensor_monitor_thread()
                     const char *action = udev_device_get_action(dev);
                     if (action) {
                         printf("USB device %s: %s\n", action, udev_device_get_devnode(dev));
+                        // udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
+                        // udev_list_entry *attr;
+                        // udev_list_entry_foreach(attr, attrs) {
+                        //     printf("%s=%s\n", udev_list_entry_get_name(attr), udev_list_entry_get_value(attr));
+                        // }
+                    }
+                    udev_device_unref(dev);
+                }
+                cout<<"!!!!!!--------------------------------------------------------!!!!!!!!!!!!!!!!!"<<endl;
+            }
+            // 串口设备的读缓冲区有数据
+            if (FD_ISSET(udev_monitor_get_fd(tty_mon), &fds)) 
+            {
+                udev_device *dev = udev_monitor_receive_device(tty_mon);
+                
+                if (dev) {
+                    const char *action = udev_device_get_action(dev);
+                    if (action) {
+                        printf("Serial port %s: %s\n", action, udev_device_get_devnode(dev));
+                        // udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
+                        // udev_list_entry *attr;
+                        // udev_list_entry_foreach(attr, attrs)
+                        // {
+                        //     printf("%s=%s\n", udev_list_entry_get_name(attr), udev_list_entry_get_value(attr));
+                        // }
+                    }
+                    udev_device_unref(dev);
+                }
+                cout<<"!!!!!!--------------------------------------------------------!!!!!!!!!!!!!!!!!"<<endl;
+            }
+
+
+            if (FD_ISSET(udev_monitor_get_fd(video_mon), &fds)) {
+                udev_device *dev = udev_monitor_receive_device(video_mon);
+                if (dev) {
+                    const char *action = udev_device_get_action(dev);
+                    if (action) {
+                        printf("Video device %s: %s\n", action, udev_device_get_devnode(dev));
                         udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
                         udev_list_entry *attr;
                         udev_list_entry_foreach(attr, attrs) {
@@ -76,25 +121,9 @@ int Sensor_monitor::Sensor_monitor_thread()
                     }
                     udev_device_unref(dev);
                 }
+                cout << "!!!!!!--------------------------------------------------------!!!!!!!!!!!!!!!!!" << endl;
             }
-            // 串口设备的读缓冲区有数据
-            if (FD_ISSET(udev_monitor_get_fd(tty_mon), &fds)) 
-            {
-                udev_device *dev = udev_monitor_receive_device(tty_mon);
-                if (dev) {
-                    const char *action = udev_device_get_action(dev);
-                    if (action) {
-                        printf("Serial port %s: %s\n", action, udev_device_get_devnode(dev));
-                        udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
-                        udev_list_entry *attr;
-                        udev_list_entry_foreach(attr, attrs)
-                        {
-                            printf("%s=%s\n", udev_list_entry_get_name(attr), udev_list_entry_get_value(attr));
-                        }
-                    }
-                    udev_device_unref(dev);
-                }
-            }
+
             //网络设备的读缓冲区有数据
             if (FD_ISSET(udev_monitor_get_fd(net_mon), &fds)) 
             {
@@ -104,15 +133,16 @@ int Sensor_monitor::Sensor_monitor_thread()
                     if (action) 
                     {
                         printf("Network device %s: %s\n", action, udev_device_get_devnode(dev));
-                        udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
-                        udev_list_entry *attr;
-                        udev_list_entry_foreach(attr, attrs)
-                        {
-                            printf("%s=%s\n", udev_list_entry_get_name(attr), udev_list_entry_get_value(attr));
-                        }
+                        // udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
+                        // udev_list_entry *attr;
+                        // udev_list_entry_foreach(attr, attrs)
+                        // {
+                        //     printf("%s=%s\n", udev_list_entry_get_name(attr), udev_list_entry_get_value(attr));
+                        // }
                     }
                     udev_device_unref(dev);
                 }
+                cout<<"!!!!!!--------------------------------------------------------!!!!!!!!!!!!!!!!!"<<endl;
             }   
         }
     }
