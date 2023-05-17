@@ -17,8 +17,8 @@ static void startSampling(mscl::InertialNode& node)
         node.enableDataStream(mscl::MipTypes::CLASS_ESTFILTER);
     }
     
-    // if(node.features().supportsCategory(mscl::MipTypes::CLASS_GNSS))
-    // {
-    //     node.enableDataStream(mscl::MipTypes::CLASS_GNSS);
-    // }
+    if(node.features().supportsCategory(mscl::MipTypes::CLASS_GNSS))
+    {
+        node.enableDataStream(mscl::MipTypes::CLASS_GNSS);
+    }
 }

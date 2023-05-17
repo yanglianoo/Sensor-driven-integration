@@ -8,9 +8,10 @@ LIBPATH+=-L./imu/LORD-MicroStrain/c++-mscl/Boost/lib
 
 # imu的动态库
 LIBimu:=-lmscl
-LIBimu+=-lLpmsIG1_OpenSourceLib 
 LIBimu+=-lboost_system
 LIBimu+=-lboost_filesystem
+LIBimu+=-lLpmsIG1_OpenSourceLib 
+
 
 # camera的动态库
 LIBcamera:=-lrealsense2
@@ -71,7 +72,7 @@ laser:test_laser.cpp
 
 .PHONY:imu
 imu:test_imu.cpp
-	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBimu) -limu $(CFLAGS) 
+	g++ $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) -limu $(LIBimu)  $(CFLAGS) 
 
 .PHONY:udev
 udev:udev_monitor.c
