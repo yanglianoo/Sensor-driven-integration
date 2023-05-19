@@ -1,5 +1,5 @@
 #指定动态链接库目录
-LIBPATH:=-L./lib
+LIBPATH:=-L./sensor_lib
 # boost 1.68.0
 LIBPATH+=-L./imu/LORD-MicroStrain/c++-mscl/Boost/lib
 
@@ -20,7 +20,7 @@ LIB+=-lstdc++
 LIB+=-lpthread  #需要多线程库文件
 
 #二次封装后的动态库名字
-LIB+=-lmiddleware
+LIBM:=-lmiddleware
 
 
 

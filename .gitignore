@@ -4,8 +4,8 @@
 
 
 
-lib/librealsense2.so
-lib/librealsense2.so.2.53
+sensor_lib/librealsense2.so
+sensor_lib/librealsense2.so.2.53
 *.out
 others/librealsense2.so
 build

@@ -1,6 +1,6 @@
 #! /bin/bash
 libmiddleware_path=$(pwd)
-libmiddleware_path+='/lib'
+libmiddleware_path+='/sensor_lib'
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$libmiddleware_path
 libboost_path=$(pwd)
 libboost_path+='/imu/LORD-MicroStrain/c++-mscl/Boost/lib'
