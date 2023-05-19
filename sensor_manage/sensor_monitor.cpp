@@ -9,15 +9,15 @@ int Sensor_monitor::Sensor_monitor_thread()
         return 1;
     }
 
-    // USB设备监听器
-    struct udev_monitor *usb_mon = udev_monitor_new_from_netlink(udev, "udev");
-    if (!usb_mon) {
-        printf("Failed to create udev monitor for USB devices.\n");
-        udev_unref(udev);
-        return 1;
-    }
-    udev_monitor_filter_add_match_subsystem_devtype(usb_mon, "usb", "usb_device");
-    udev_monitor_enable_receiving(usb_mon);
+    // // USB设备监听器
+    // struct udev_monitor *usb_mon = udev_monitor_new_from_netlink(udev, "udev");
+    // if (!usb_mon) {
+    //     printf("Failed to create udev monitor for USB devices.\n");
+    //     udev_unref(udev);
+    //     return 1;
+    // }
+    // udev_monitor_filter_add_match_subsystem_devtype(usb_mon, "usb", "usb_device");
+    // udev_monitor_enable_receiving(usb_mon);
 
 
     // 串口设备监听器
@@ -57,7 +57,7 @@ int Sensor_monitor::Sensor_monitor_thread()
     while (1) {
         fd_set fds;
         FD_ZERO(&fds);
-        FD_SET(udev_monitor_get_fd(usb_mon), &fds);
+        //FD_SET(udev_monitor_get_fd(usb_mon), &fds);
         FD_SET(udev_monitor_get_fd(tty_mon), &fds);
         FD_SET(udev_monitor_get_fd(net_mon), &fds);
         FD_SET(udev_monitor_get_fd(video_mon), &fds);
@@ -68,23 +68,23 @@ int Sensor_monitor::Sensor_monitor_thread()
 
         if (ret > 0) {
             // USB 设备的读缓冲区有数据
-            if (FD_ISSET(udev_monitor_get_fd(usb_mon), &fds)) 
-            {
-                udev_device *dev = udev_monitor_receive_device(usb_mon);
-                if (dev) {
-                    const char *action = udev_device_get_action(dev);
-                    if (action) {
-                        printf("USB device %s: %s\n", action, udev_device_get_devnode(dev));
-                        // udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
-                        // udev_list_entry *attr;
-                        // udev_list_entry_foreach(attr, attrs) {
-                        //     printf("%s=%s\n", udev_list_entry_get_name(attr), udev_list_entry_get_value(attr));
-                        // }
-                    }
-                    udev_device_unref(dev);
-                }
-                cout<<"!!!!!!--------------------------------------------------------!!!!!!!!!!!!!!!!!"<<endl;
-            }
+            // if (FD_ISSET(udev_monitor_get_fd(usb_mon), &fds)) 
+            // {
+            //     udev_device *dev = udev_monitor_receive_device(usb_mon);
+            //     if (dev) {
+            //         const char *action = udev_device_get_action(dev);
+            //         if (action) {
+            //             printf("USB device %s: %s\n", action, udev_device_get_devnode(dev));
+            //             // udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
+            //             // udev_list_entry *attr;
+            //             // udev_list_entry_foreach(attr, attrs) {
+            //             //     printf("%s=%s\n", udev_list_entry_get_name(attr), udev_list_entry_get_value(attr));
+            //             // }
+            //         }
+            //         udev_device_unref(dev);
+            //     }
+            //     cout<<"!!!!!!--------------------------------------------------------!!!!!!!!!!!!!!!!!"<<endl;
+            // }
             // 串口设备的读缓冲区有数据
             if (FD_ISSET(udev_monitor_get_fd(tty_mon), &fds)) 
             {
@@ -106,7 +106,7 @@ int Sensor_monitor::Sensor_monitor_thread()
                 cout<<"!!!!!!--------------------------------------------------------!!!!!!!!!!!!!!!!!"<<endl;
             }
 
-
+            // 视频设备
             if (FD_ISSET(udev_monitor_get_fd(video_mon), &fds)) {
                 udev_device *dev = udev_monitor_receive_device(video_mon);
                 if (dev) {
@@ -146,8 +146,10 @@ int Sensor_monitor::Sensor_monitor_thread()
             }   
         }
     }
-        udev_monitor_unref(usb_mon);
+        // udev_monitor_unref(usb_mon);
         udev_monitor_unref(tty_mon);
+        udev_monitor_unref(video_mon);
         udev_monitor_unref(net_mon);
+
         udev_unref(udev);   
 }

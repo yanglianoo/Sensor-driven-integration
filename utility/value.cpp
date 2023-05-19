@@ -137,12 +137,12 @@ Value::operator bool()
 
 Value::operator int() {
 
-    return std::stoi(m_value);
+    return atoi(m_value.c_str());
 }
 
 Value::operator double() {
 
-    return std::stod(m_value);
+    return atof(m_value.c_str());
 }
 
 Value::operator std::string() {

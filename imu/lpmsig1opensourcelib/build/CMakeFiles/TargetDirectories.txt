@@ -1,3 +1,0 @@
-/home/dds/Sensor-driven-integration/imu/lpmsig1opensourcelib/build/CMakeFiles/rebuild_cache.dir
-/home/dds/Sensor-driven-integration/imu/lpmsig1opensourcelib/build/CMakeFiles/edit_cache.dir
-/home/dds/Sensor-driven-integration/imu/lpmsig1opensourcelib/build/CMakeFiles/LpmsIG1_OpenSourceLib.dir

@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "sensor_driver/camera.hpp"
 #include <iostream>
 
 

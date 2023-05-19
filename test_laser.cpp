@@ -301,7 +301,7 @@ on_finished:
     return 0;
 }
  */
-#include "laser.h"
+#include "sensor_driver/laser.hpp"
 
 int main()
 {
