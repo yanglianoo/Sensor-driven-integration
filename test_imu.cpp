@@ -1,10 +1,14 @@
-#include "sensor_driver/imu.hpp"
+#include <sensor_driver/imu.hpp>
 #include <iostream>
-#include "sensor_manage/config_paser.hpp"
+#include <sensor_manage/sensor_server.hpp>
 
 int main()
 {   
-    config_paser();
+    
+    Sensor_server * sensor_server = new Sensor_server();
+
+    sensor_server->Sensor_monitor_thread();
+    
     // IMU* imu = new MicroStrain();
     // // MicroStrain imu = MicroStrain();
     // imu->initialize("/dev/ttyUSB0",115200);

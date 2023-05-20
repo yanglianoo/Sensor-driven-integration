@@ -1,7 +1,7 @@
 #pragma once
-#include "../laser/rplidar_sdk-master/sl_lidar.h"
-#include "../laser/rplidar_sdk-master/sl_types.h"
-#include "../laser/rplidar_sdk-master/sl_lidar_driver.h"
+#include <laser/rplidar_sdk-master/sl_lidar.h>
+#include <laser/rplidar_sdk-master/sl_types.h>
+#include <laser/rplidar_sdk-master/sl_lidar_driver.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>

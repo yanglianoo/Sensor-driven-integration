@@ -1,8 +1,7 @@
 #pragma once
 #include <stdint.h>
-// #include "MicroStrain.h"
-#include "../imu/LORD-MicroStrain/MicroStrain.h"
-#include "../imu/lpmsig1opensourcelib/LpmsIG1.h"
+#include <imu/LORD-MicroStrain/MicroStrain.h>
+#include <imu/lpmsig1opensourcelib/LpmsIG1.h>
 #include <iostream>
 #include <string>
 

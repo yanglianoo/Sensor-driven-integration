@@ -1,6 +1,52 @@
-#include "sensor_monitor.hpp"
+#include "sensor_server.hpp"
+#include <stdio.h>
+#include <libudev.h>
+#include <sys/select.h>
+#include <utility/ini_file.hpp>
+#include <utility/system.hpp>
+#include <utility/singleton.hpp>
+#include <utility/logger.hpp>
+Sensor_server::Sensor_server()
+{
+    // init system
+    System * sys = Singleton<System>::instance();
+    sys->init();
 
-int Sensor_monitor::Sensor_monitor_thread()
+    // init logger
+    Logger::instance()->open(sys->get_root_path() + "/log/snesor.log");
+    
+    // init inifile
+    IniFile * ini = Singleton<IniFile>::instance();
+    ini->load(sys->get_root_path() + "/sensor_config.ini");
+
+
+    imu_count = (*ini)["IMU_CONFIG"]["imu_count"];
+
+
+    // 解析 IMU 配置文件
+    if(imu_count > 1)
+    {
+        for (int i = 1; i <= imu_count; i++)
+        {
+            string imu_num = "IMU" + std::to_string(i);
+
+            string imu_name = (*ini)[imu_num]["imu_name"];
+
+            Imu_Data_Node imu_Data_Node ;
+
+            imu_Data_Node.Imu_Name = imu_name;
+            imu_Data_Node.Device_Name = (string)(*ini)[imu_num]["serial_port"];
+            imu_Data_Node.BaudRate = (*ini)[imu_num]["baudRate"];
+            
+            imu_sections[imu_name] = imu_Data_Node;
+        }
+    }
+
+    
+}
+
+
+int Sensor_server::Sensor_monitor_thread()
 {
 
     udev *udev = udev_new();
@@ -8,17 +54,6 @@ int Sensor_monitor::Sensor_monitor_thread()
         printf("Failed to create udev.\n");
         return 1;
     }
-
-    // // USB设备监听器
-    // struct udev_monitor *usb_mon = udev_monitor_new_from_netlink(udev, "udev");
-    // if (!usb_mon) {
-    //     printf("Failed to create udev monitor for USB devices.\n");
-    //     udev_unref(udev);
-    //     return 1;
-    // }
-    // udev_monitor_filter_add_match_subsystem_devtype(usb_mon, "usb", "usb_device");
-    // udev_monitor_enable_receiving(usb_mon);
-
 
     // 串口设备监听器
     struct udev_monitor *tty_mon = udev_monitor_new_from_netlink(udev, "udev");
@@ -67,24 +102,6 @@ int Sensor_monitor::Sensor_monitor_thread()
         int ret = select(max_fd, &fds, NULL, NULL, NULL);
 
         if (ret > 0) {
-            // USB 设备的读缓冲区有数据
-            // if (FD_ISSET(udev_monitor_get_fd(usb_mon), &fds)) 
-            // {
-            //     udev_device *dev = udev_monitor_receive_device(usb_mon);
-            //     if (dev) {
-            //         const char *action = udev_device_get_action(dev);
-            //         if (action) {
-            //             printf("USB device %s: %s\n", action, udev_device_get_devnode(dev));
-            //             // udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
-            //             // udev_list_entry *attr;
-            //             // udev_list_entry_foreach(attr, attrs) {
-            //             //     printf("%s=%s\n", udev_list_entry_get_name(attr), udev_list_entry_get_value(attr));
-            //             // }
-            //         }
-            //         udev_device_unref(dev);
-            //     }
-            //     cout<<"!!!!!!--------------------------------------------------------!!!!!!!!!!!!!!!!!"<<endl;
-            // }
             // 串口设备的读缓冲区有数据
             if (FD_ISSET(udev_monitor_get_fd(tty_mon), &fds)) 
             {
@@ -153,3 +170,4 @@ int Sensor_monitor::Sensor_monitor_thread()
 
         udev_unref(udev);   
 }
+
