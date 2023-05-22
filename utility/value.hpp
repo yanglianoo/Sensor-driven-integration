@@ -7,55 +7,58 @@
 
 #include <iostream>
 #include <string>
-
-class Value
+namespace SMW
 {
-public:
-    enum Type
+
+
+    class Value
     {
-        V_NULL = 0,
-        V_BOOL,
-        V_INT,
-        V_DOUBLE,
-        V_STRING
+    public:
+        enum Type
+        {
+            V_NULL = 0,
+            V_BOOL,
+            V_INT,
+            V_DOUBLE,
+            V_STRING
+        };
+
+        Value();
+        Value(bool value);
+        Value(int value);
+        Value(double value);
+        Value(const char * value);
+        Value(const std::string & value);
+        ~Value();
+
+        Type type() const;
+        void type(Type type);
+        bool is_null() const;
+        bool is_int() const;
+        bool is_double() const;
+        bool is_string() const;
+
+        Value & operator = (bool value);
+        Value & operator = (int value);
+        Value & operator = (double value);
+        Value & operator = (const char * value);
+        Value & operator = (const std::string & value);
+        Value & operator = (const Value & value);
+
+        bool operator == (const Value & other);
+        bool operator != (const Value & other);
+        
+        // 可隐式地转换为 int类型 和 double 类型
+        operator int();
+        operator double();
+        operator bool();
+        operator std::string();
+        operator std::string() const;
+
+    private:
+        Type m_type;
+        std::string m_value;
     };
-
-    Value();
-    Value(bool value);
-    Value(int value);
-    Value(double value);
-    Value(const char * value);
-    Value(const std::string & value);
-    ~Value();
-
-    Type type() const;
-    void type(Type type);
-    bool is_null() const;
-    bool is_int() const;
-    bool is_double() const;
-    bool is_string() const;
-
-    Value & operator = (bool value);
-    Value & operator = (int value);
-    Value & operator = (double value);
-    Value & operator = (const char * value);
-    Value & operator = (const std::string & value);
-    Value & operator = (const Value & value);
-
-    bool operator == (const Value & other);
-    bool operator != (const Value & other);
-    
-    // 可隐式地转换为 int类型 和 double 类型
-    operator int();
-    operator double();
-    operator bool();
-    operator std::string();
-    operator std::string() const;
-
-private:
-    Type m_type;
-    std::string m_value;
-};
-
+}
 
 

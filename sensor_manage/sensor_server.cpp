@@ -12,7 +12,7 @@ Sensor_server::Sensor_server()
     sys->init();
 
     // init logger
-    Logger::instance()->open(sys->get_root_path() + "/log/snesor.log");
+    Logger::instance()->open(sys->get_root_path() + "/log/sensor.log");
     
     // init inifile
     IniFile * ini = Singleton<IniFile>::instance();
@@ -30,7 +30,7 @@ Sensor_server::Sensor_server()
             string imu_num = "IMU" + std::to_string(i);
 
             string imu_name = (*ini)[imu_num]["imu_name"];
-
+            
             Imu_Data_Node imu_Data_Node ;
 
             imu_Data_Node.Imu_Name = imu_name;
@@ -40,6 +40,8 @@ Sensor_server::Sensor_server()
             imu_sections[imu_name] = imu_Data_Node;
         }
     }
+
+    log_info("配置文件读取完毕！");
 
     
 }
@@ -76,6 +78,7 @@ void Sensor_server::Camera_Udev_Get(udev_device *dev)
         {
             camera_sections[camera_data_node.Device_Name] = camera_data_node;
             cout<<"!----------------------"<< "检测到设备插入" << "------------------------!"<<endl;
+            log_info("检测到设备插入:%s",camera_data_node.Camera_Name);
             cout<<"!----------------------"<< camera_data_node.Camera_Name << "------------------------!"<<endl;
             cout<<"Action:"<<camera_data_node.Action<<endl;
             cout<<"Device_Name:"<<camera_data_node.Device_Name <<endl;
@@ -102,6 +105,7 @@ void Sensor_server::Camera_Udev_Get(udev_device *dev)
         {
             camera_sections.erase(it); // 删除节点
             cout<<"!----------------------"<< "检测到设备拔出" << "------------------------!"<<endl;
+            log_info("检测到设备拔出:%s",camera_data_node.Camera_Name);
             cout<<"Remove:" << camera_data_node.ID_Model << "  form Sensor_Manage"<<endl;
         }
     }

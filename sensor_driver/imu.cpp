@@ -3,7 +3,7 @@
 #include <thread>
 #include <stdarg.h>
 using namespace std;
-
+using namespace SMW;
 
 void logd(std::string tag, const char* str, ...)
 {

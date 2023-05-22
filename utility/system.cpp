@@ -9,6 +9,8 @@
 #include "singleton.hpp"
 #include "system.hpp"
 
+using namespace SMW;
+
 System::System()
 {
 }

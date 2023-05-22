@@ -8,7 +8,8 @@
 #include <string.h>
 
 using namespace sl;
-
+namespace SMW
+{
 
 class lidar
 {
@@ -43,6 +44,7 @@ private:
     // sl_lidar_response_measurement_node_hq_t nodes[8192];
     // size_t   count ;
 };
+}
 
 
 

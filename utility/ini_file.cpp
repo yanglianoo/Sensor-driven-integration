@@ -9,6 +9,7 @@ using std::ofstream;
 #include <algorithm>
 #include "ini_file.hpp"
 
+using namespace SMW;
 
 IniFile::IniFile()
 {

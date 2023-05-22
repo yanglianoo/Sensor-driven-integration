@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+namespace SMW
+{
 class IMU {
 public:
     virtual void initialize(const std::string& port, uint32_t baudRate) = 0;
@@ -15,6 +17,7 @@ public:
         float y;
         float z;
     };
+    
     Vector3 angular_velocity;
     Vector3 linear_acceleration;
 };
@@ -43,6 +46,8 @@ class LpmsIG1:public IMU
         IG1I* sensor1;
         IG1ImuDataI sd;
 };
+
+}
 
 
 

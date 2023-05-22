@@ -5,6 +5,9 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
 
+namespace SMW
+{
+
 class Camera {
 public:
     virtual void initialize(const int device, int width=640, int height=480, int fps=30, bool enable_depth=false) = 0;
@@ -49,3 +52,5 @@ private:
 // private:
 //     cv::VideoCapture cap;
 // };
+
+}

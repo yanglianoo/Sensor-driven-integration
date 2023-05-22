@@ -11,7 +11,8 @@
 using std::string;
 
 #include "value.hpp"
-
+namespace SMW
+{
 typedef std::map<string, Value> Section;
 
 class IniFile
@@ -49,4 +50,6 @@ private:
     string m_filename;
     std::map<string, Section> m_sections;
 };
+
+}
 

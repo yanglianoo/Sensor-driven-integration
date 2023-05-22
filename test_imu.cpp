@@ -1,7 +1,7 @@
 #include <sensor_driver/imu.hpp>
 #include <iostream>
 #include <sensor_manage/sensor_server.hpp>
-
+using namespace SMW;
 int main()
 {   
     

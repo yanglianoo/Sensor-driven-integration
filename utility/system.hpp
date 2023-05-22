@@ -8,22 +8,23 @@
 #include <string>
 using std::string;
 
-
-
-class System
+namespace SMW
 {
-public:
-    System();
-    ~System();
-    
-    void init();
-    //获取程序的执行路径
-    string get_root_path();
 
-private:
-    void core_dump();
+    class System
+    {
+    public:
+        System();
+        ~System();
+        
+        void init();
+        //获取程序的执行路径
+        string get_root_path();
 
-private:
-    string m_root_path;
-};
+    private:
+        void core_dump();
 
+    private:
+        string m_root_path;
+    };
+}

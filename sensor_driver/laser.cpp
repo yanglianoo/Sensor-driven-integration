@@ -4,6 +4,7 @@
 #endif
 
 #include <unistd.h>
+using namespace SMW;
 static inline void delay(sl_word_size_t ms){
     while (ms>=1000){
         usleep(1000*1000);

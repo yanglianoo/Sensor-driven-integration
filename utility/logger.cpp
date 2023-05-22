@@ -6,6 +6,8 @@
 #include <errno.h>
 #include <stdexcept>
 
+using namespace SMW;
+
 const char* Logger::s_level[LOG_COUNT] =
 {
     "DEBUG",

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <sstream>
 using std::stringstream;
-
+using namespace SMW;
 Value::Value() : m_type(V_NULL)
 {
 }

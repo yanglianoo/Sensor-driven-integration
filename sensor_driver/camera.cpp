@@ -1,7 +1,7 @@
 #include "camera.hpp"
 using namespace std;
 using namespace cv;
-
+using namespace SMW;
 void Camera::imgBinarize(const cv::Mat &origin, cv::Mat &target){
 
     threshold(origin, target, 128, 255, THRESH_BINARY);
