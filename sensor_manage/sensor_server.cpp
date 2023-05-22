@@ -1,11 +1,10 @@
 #include "sensor_server.hpp"
-#include <stdio.h>
-#include <libudev.h>
-#include <sys/select.h>
 #include <utility/ini_file.hpp>
 #include <utility/system.hpp>
 #include <utility/singleton.hpp>
 #include <utility/logger.hpp>
+
+using namespace SMW;
 Sensor_server::Sensor_server()
 {
     // init system
@@ -37,7 +36,7 @@ Sensor_server::Sensor_server()
             imu_Data_Node.Imu_Name = imu_name;
             imu_Data_Node.Device_Name = (string)(*ini)[imu_num]["serial_port"];
             imu_Data_Node.BaudRate = (*ini)[imu_num]["baudRate"];
-            
+            imu_Data_Node.show();
             imu_sections[imu_name] = imu_Data_Node;
         }
     }
@@ -45,20 +44,83 @@ Sensor_server::Sensor_server()
     
 }
 
+void Sensor_server::Camera_Udev_Get(udev_device *dev)
+{
+    Cameara_Data_Node  camera_data_node;
 
+    camera_data_node.Action = udev_device_get_action(dev);      //获取设备拔插动作
+    camera_data_node.Device_Name = udev_device_get_devnode(dev);//获取设备描述符
+    camera_data_node.ID_Model = udev_device_get_property_value(dev, "ID_MODEL");
+    camera_data_node.ID_Vendor = udev_device_get_property_value(dev, "ID_VENDOR");
+    camera_data_node.Camera_Name = udev_device_get_property_value(dev, "ID_V4L_PRODUCT");
+
+    if(camera_data_node.Action == "add")
+    {
+        
+        string video_cap = udev_device_get_property_value(dev, "ID_V4L_CAPABILITIES");
+
+        size_t found = camera_data_node.Camera_Name.find("Depth");
+        if (found != std::string::npos) {
+            camera_data_node.type = DEPTH;
+        } 
+
+        found = camera_data_node.Camera_Name.find("USB");
+
+        if (found != std::string::npos) {
+            camera_data_node.type = RGB;
+        } 
+
+        //当该视频设备符能够捕获视频时才输出
+        found = video_cap.find("capture");
+        if (found != std::string::npos) 
+        {
+            camera_sections[camera_data_node.Device_Name] = camera_data_node;
+            cout<<"!----------------------"<< "检测到设备插入" << "------------------------!"<<endl;
+            cout<<"!----------------------"<< camera_data_node.Camera_Name << "------------------------!"<<endl;
+            cout<<"Action:"<<camera_data_node.Action<<endl;
+            cout<<"Device_Name:"<<camera_data_node.Device_Name <<endl;
+            cout<<"Camera_Name:"<<camera_data_node.Camera_Name <<endl;
+            cout<<"ID_Model:"<<camera_data_node.ID_Model <<endl;
+            cout<<"ID_Vendor:"<<camera_data_node.ID_Vendor <<endl;
+            switch (camera_data_node.type)
+            {
+            case RGB:
+                cout<<"type:"<<"RGB" <<endl;
+                break;
+            case DEPTH:
+                cout<<"type:"<<"Depth" <<endl;
+                break;
+            default:
+                break;
+            }
+        } 
+    }
+    else if(camera_data_node.Action == "remove")
+    {
+        auto it =camera_sections.find(camera_data_node.Device_Name);
+        if (it != camera_sections.end()) 
+        {
+            camera_sections.erase(it); // 删除节点
+            cout<<"!----------------------"<< "检测到设备拔出" << "------------------------!"<<endl;
+            cout<<"Remove:" << camera_data_node.ID_Model << "  form Sensor_Manage"<<endl;
+        }
+    }
+
+}
 int Sensor_server::Sensor_monitor_thread()
 {
 
+
     udev *udev = udev_new();
     if (!udev) {
-        printf("Failed to create udev.\n");
+        cout<<"Failed to create udev.\n"<<endl;
         return 1;
     }
 
     // 串口设备监听器
     struct udev_monitor *tty_mon = udev_monitor_new_from_netlink(udev, "udev");
     if (!tty_mon) {
-        printf("Failed to create udev monitor for serial ports.\n");
+        cout<<"Failed to create udev monitor for serial ports.\n"<<endl;
         udev_unref(udev);
         return 1;
     }
@@ -68,7 +130,7 @@ int Sensor_server::Sensor_monitor_thread()
     // 视频设备监听器
     struct udev_monitor *video_mon = udev_monitor_new_from_netlink(udev, "udev");
     if (!video_mon) {
-        printf("Failed to create udev monitor for video devices.\n");
+        cout<<"Failed to create udev monitor for video devices.\n"<<endl;
         udev_unref(udev);
         return 1;
     }
@@ -79,14 +141,14 @@ int Sensor_server::Sensor_monitor_thread()
     // 网络设备监听器
     struct udev_monitor *net_mon = udev_monitor_new_from_netlink(udev, "udev");
     if (!net_mon) {
-        printf("Failed to create udev monitor for network devices.\n");
+        cout<<"Failed to create udev monitor for network devices.\n"<<endl;
         udev_unref(udev);
         return 1;
     }
     udev_monitor_filter_add_match_subsystem_devtype(net_mon, "net", NULL);
     udev_monitor_enable_receiving(net_mon);
 
-    printf("Wait for the sensor to be plugged in .....\n");
+    std::cout<<"Wait for the sensor to be plugged in .....\n"<<std::endl;
 
 
     while (1) {
@@ -110,7 +172,7 @@ int Sensor_server::Sensor_monitor_thread()
                 if (dev) {
                     const char *action = udev_device_get_action(dev);
                     if (action) {
-                        printf("Serial port %s: %s\n", action, udev_device_get_devnode(dev));
+                        cout<<"Serial port:"<< action<< udev_device_get_devnode(dev)<<endl;
                         // udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
                         // udev_list_entry *attr;
                         // udev_list_entry_foreach(attr, attrs)
@@ -124,21 +186,18 @@ int Sensor_server::Sensor_monitor_thread()
             }
 
             // 视频设备
-            if (FD_ISSET(udev_monitor_get_fd(video_mon), &fds)) {
+            if (FD_ISSET(udev_monitor_get_fd(video_mon), &fds)) 
+            {
                 udev_device *dev = udev_monitor_receive_device(video_mon);
-                if (dev) {
+                if (dev) 
+                {
                     const char *action = udev_device_get_action(dev);
-                    if (action) {
-                        printf("Video device %s: %s\n", action, udev_device_get_devnode(dev));
-                        udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
-                        udev_list_entry *attr;
-                        udev_list_entry_foreach(attr, attrs) {
-                            printf("%s=%s\n", udev_list_entry_get_name(attr), udev_list_entry_get_value(attr));
-                        }
+                    if (action) 
+                    {
+                        Camera_Udev_Get(dev);
                     }
                     udev_device_unref(dev);
                 }
-                cout << "!!!!!!--------------------------------------------------------!!!!!!!!!!!!!!!!!" << endl;
             }
 
             //网络设备的读缓冲区有数据
@@ -149,7 +208,7 @@ int Sensor_server::Sensor_monitor_thread()
                     const char *action = udev_device_get_action(dev);
                     if (action) 
                     {
-                        printf("Network device %s: %s\n", action, udev_device_get_devnode(dev));
+                        std::cout << "Network device " << action << ": " << udev_device_get_devnode(dev) << std::endl;
                         // udev_list_entry *attrs = udev_device_get_properties_list_entry(dev);
                         // udev_list_entry *attr;
                         // udev_list_entry_foreach(attr, attrs)
