@@ -1,6 +1,6 @@
-#include "sensor_driver/camera.hpp"
+#include <sensor_driver/camera.hpp>
 #include <iostream>
-
+using namespace SMW;
 
 using namespace cv;
 using namespace std;

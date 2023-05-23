@@ -16,7 +16,7 @@ public:
     string Device_Name;     // 分配的设备描述符
     string ID_Model;        // 设备的型号  
     string ID_Vendor;       // 设备的厂商
-    //string Driver_Path;     // 驱动程序路径,特指头文件路径
+    //string Driver_Path;   // 驱动程序路径,特指头文件路径
 };
 
 
@@ -47,7 +47,7 @@ class Cameara_Data_Node : public Sensor_Node
 public:
     Camera_Type type;     // 相机类型
     string Camera_Name;   // 相机型号 
-    int width;      
+    int width;            
     int height;
 };
 

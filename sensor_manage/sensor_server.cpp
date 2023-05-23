@@ -78,7 +78,7 @@ void Sensor_server::Camera_Udev_Get(udev_device *dev)
         {
             camera_sections[camera_data_node.Device_Name] = camera_data_node;
             cout<<"!----------------------"<< "检测到设备插入" << "------------------------!"<<endl;
-            log_info("检测到设备插入:%s",camera_data_node.Camera_Name);
+            log_info("检测到设备插入:%s",string(camera_data_node.Camera_Name));
             cout<<"!----------------------"<< camera_data_node.Camera_Name << "------------------------!"<<endl;
             cout<<"Action:"<<camera_data_node.Action<<endl;
             cout<<"Device_Name:"<<camera_data_node.Device_Name <<endl;
@@ -105,7 +105,7 @@ void Sensor_server::Camera_Udev_Get(udev_device *dev)
         {
             camera_sections.erase(it); // 删除节点
             cout<<"!----------------------"<< "检测到设备拔出" << "------------------------!"<<endl;
-            log_info("检测到设备拔出:%s",camera_data_node.Camera_Name);
+            log_info("检测到设备拔出:%s",string(camera_data_node.Camera_Name));
             cout<<"Remove:" << camera_data_node.ID_Model << "  form Sensor_Manage"<<endl;
         }
     }
