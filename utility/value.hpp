@@ -9,8 +9,6 @@
 #include <string>
 namespace SMW
 {
-
-
     class Value
     {
     public:

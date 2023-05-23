@@ -7,8 +7,6 @@
 
 namespace SMW
 {
-
-
     template <typename T>
     class Singleton
     {

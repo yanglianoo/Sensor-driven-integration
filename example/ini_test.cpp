@@ -6,6 +6,7 @@
 */
 #include <iostream>
 #include <utility/ini_file.hpp>
+using namespace SMW;
 int main(int argc, char const *argv[])
 {
     IniFile * ini = new IniFile();

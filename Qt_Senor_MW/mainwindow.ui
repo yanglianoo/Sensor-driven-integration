@@ -291,13 +291,6 @@
     </widget>
     <widget class="QWidget" name="page_3"/>
    </widget>
-   <zorder>frame_left</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>pushButton</zorder>
-   <zorder></zorder>
-   <zorder>textBrowser</zorder>
-   <zorder>checkBox_3</zorder>
-   <zorder>stackedWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
