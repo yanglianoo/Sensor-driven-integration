@@ -43,14 +43,14 @@ private:
     rs2::config cfg;
 };
 
-// class USBCamera : public Camera {
-// public:
-//     void initialize(const int device,const int width=640, const int height=480, 
-//                             const int fps=30, bool enable_depth=false);
-//     void getData();
+class USBCamera : public Camera {
+public:
+    void initialize(const int device,const int width=640, const int height=480, 
+                            const int fps=30, bool enable_depth=false);
+    void getData();
 
-// private:
-//     cv::VideoCapture cap;
-// };
+private:
+    cv::VideoCapture cap;
+};
 
 }

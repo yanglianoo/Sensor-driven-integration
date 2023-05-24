@@ -88,3 +88,28 @@ void RealSenseD435::getData()
 
     }
 }
+
+void USBCamera::initialize(const int device,int width, int height, int fps, bool enable_depth)
+{
+    std::cout << "开始USB相机初始化" << std::endl;
+    cap = VideoCapture(device);
+    if (!cap.isOpened())
+    {
+        cout << "无法打开摄像头" << endl;
+        return;
+    }
+    std::cout << "USB相机初始化完成" << std::endl;
+
+
+}
+
+
+void USBCamera::getData()
+{
+    std::cout << "开始获取数据" << std::endl;  
+    cap.read(colorMat);
+    if (colorMat.empty()) {
+        cout << "无法获取摄像头帧" << endl;
+        return;
+    }
+}

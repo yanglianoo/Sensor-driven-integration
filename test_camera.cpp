@@ -53,7 +53,7 @@ int main()
     sensor_server->Sensor_monitor_thread();
     });
 
-    std::thread cameraThread([&]() {
+    std::thread D435Thread([&]() {
         while(true)
         {
             auto  it = sensor_server->camera_sections.find("Intel_R__RealSense_TM__Depth_Camera_435");
@@ -73,28 +73,48 @@ int main()
         }
     });
 
-    std::thread cameraThread([&]() {
+
+
+    std::thread usbcameraThread([&]() {
         while(true)
         {
             auto  it = sensor_server->camera_sections.find("USB_Camera");
             if (it != sensor_server->camera_sections.end()) 
             {
-                    
-                    Camera *cam =new RealSenseD435();
-                    cam->initialize(0, 640, 480, 30, true);
+                    string dev_name = sensor_server->camera_sections["USB_Camera"].Device_Name;
+                    VideoCapture cap(dev_name);
+                    cout<<"-----------------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+                    cout<<dev_name<<endl;
+
+                    namedWindow("Camera", WINDOW_NORMAL);
+                    Mat frame;
+
                     while(true)
                     {
-                            cam->getData();
-                            cam->showImg("Display Image", cam->colorMat);
-                            cam->showImg("Display depth", cam->depthMat*15);
-                            waitKey(1);
+  
+                    // 读取图像帧
+                    cap.read(frame);
+
+                    // 检查是否成功读取图像帧
+                    if (frame.empty()) {
+                        // 未能读取到有效的图像帧，退出循环
+                        break;
+                    }
+
+                    // 显示图像帧
+                    imshow("Camera", frame);
+
+                    // 等待用户按下ESC键退出循环
+                    if (waitKey(1) == 27) {
+                        break;
+                    }
                     }
             }
         }
     });
-
     sensorThread.join();
-    cameraThread.join();
+    D435Thread.join();
+    usbcameraThread.join();
     return 0;
 
 }
