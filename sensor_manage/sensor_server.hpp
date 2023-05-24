@@ -57,7 +57,7 @@ class Sensor_server
     typedef std::map<string, Imu_Data_Node> Imu_Section;
     typedef std::map<string, Cameara_Data_Node> Camera_Section;
 
-private:
+public:
     int imu_count;
     int camera_count;
     int laser_count;
@@ -65,7 +65,7 @@ private:
     Camera_Section camera_sections;
     
 public:
-    int Sensor_monitor_thread();
+    void Sensor_monitor_thread();
     void Camera_Udev_Get(udev_device *dev);
     Sensor_server();
     ~Sensor_server();

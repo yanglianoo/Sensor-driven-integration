@@ -1,12 +1,15 @@
 #include <sensor_driver/camera.hpp>
+#include <sensor_manage/sensor_server.hpp>
+#include <thread>
 #include <iostream>
+#include <unistd.h>
 using namespace SMW;
 
 using namespace cv;
 using namespace std;
 
-int main()
-{   
+void D435_show()
+{
     Camera *cam =new RealSenseD435();
     cam->initialize(0, 640, 480, 30, true);
     while (true)
@@ -42,6 +45,56 @@ int main()
         cam->showImg("Display depth", cam->depthMat*15);
         waitKey(1);
     }
+}
+int main()
+{   
+    Sensor_server * sensor_server = new Sensor_server();
+    std::thread sensorThread([&]() {
+    sensor_server->Sensor_monitor_thread();
+    });
+
+    std::thread cameraThread([&]() {
+        while(true)
+        {
+            auto  it = sensor_server->camera_sections.find("Intel_R__RealSense_TM__Depth_Camera_435");
+            if (it != sensor_server->camera_sections.end()) 
+            {
+                    
+                    Camera *cam =new RealSenseD435();
+                    cam->initialize(0, 640, 480, 30, true);
+                    while(true)
+                    {
+                            cam->getData();
+                            cam->showImg("Display Image", cam->colorMat);
+                            cam->showImg("Display depth", cam->depthMat*15);
+                            waitKey(1);
+                    }
+            }
+        }
+    });
+
+    std::thread cameraThread([&]() {
+        while(true)
+        {
+            auto  it = sensor_server->camera_sections.find("USB_Camera");
+            if (it != sensor_server->camera_sections.end()) 
+            {
+                    
+                    Camera *cam =new RealSenseD435();
+                    cam->initialize(0, 640, 480, 30, true);
+                    while(true)
+                    {
+                            cam->getData();
+                            cam->showImg("Display Image", cam->colorMat);
+                            cam->showImg("Display depth", cam->depthMat*15);
+                            waitKey(1);
+                    }
+            }
+        }
+    });
+
+    sensorThread.join();
+    cameraThread.join();
     return 0;
 
 }

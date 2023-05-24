@@ -25,8 +25,8 @@ laser:test_laser.cpp
 	$(CC)  $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBM) $(CFLAGS) 
 
 
-.PHONY:imu
-imu:test_imu.cpp
+.PHONY:test
+test:test_imu.cpp
 	$(CC)  $(INCLUDE)  $< -o $@.out $(LIBPATH) $(LIB) $(LIBM) $(CFLAGS) 
 
 

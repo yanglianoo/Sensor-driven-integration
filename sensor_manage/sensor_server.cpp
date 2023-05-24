@@ -76,9 +76,9 @@ void Sensor_server::Camera_Udev_Get(udev_device *dev)
         found = video_cap.find("capture");
         if (found != std::string::npos) 
         {
-            camera_sections[camera_data_node.Device_Name] = camera_data_node;
+            camera_sections[camera_data_node.ID_Model] = camera_data_node;
             cout<<"!----------------------"<< "检测到设备插入" << "------------------------!"<<endl;
-            log_info("检测到设备插入:%s",string(camera_data_node.Camera_Name));
+            // log_info("检测到设备插入");
             cout<<"!----------------------"<< camera_data_node.Camera_Name << "------------------------!"<<endl;
             cout<<"Action:"<<camera_data_node.Action<<endl;
             cout<<"Device_Name:"<<camera_data_node.Device_Name <<endl;
@@ -100,25 +100,24 @@ void Sensor_server::Camera_Udev_Get(udev_device *dev)
     }
     else if(camera_data_node.Action == "remove")
     {
-        auto it =camera_sections.find(camera_data_node.Device_Name);
+        auto it =camera_sections.find(camera_data_node.ID_Model);
         if (it != camera_sections.end()) 
         {
             camera_sections.erase(it); // 删除节点
             cout<<"!----------------------"<< "检测到设备拔出" << "------------------------!"<<endl;
-            log_info("检测到设备拔出:%s",string(camera_data_node.Camera_Name));
+            log_info("检测到设备拔出");
             cout<<"Remove:" << camera_data_node.ID_Model << "  form Sensor_Manage"<<endl;
         }
     }
 
 }
-int Sensor_server::Sensor_monitor_thread()
+void Sensor_server::Sensor_monitor_thread()
 {
 
 
     udev *udev = udev_new();
     if (!udev) {
         cout<<"Failed to create udev.\n"<<endl;
-        return 1;
     }
 
     // 串口设备监听器
@@ -126,7 +125,6 @@ int Sensor_server::Sensor_monitor_thread()
     if (!tty_mon) {
         cout<<"Failed to create udev monitor for serial ports.\n"<<endl;
         udev_unref(udev);
-        return 1;
     }
     udev_monitor_filter_add_match_subsystem_devtype(tty_mon, "tty", NULL);
     udev_monitor_enable_receiving(tty_mon);
@@ -136,7 +134,6 @@ int Sensor_server::Sensor_monitor_thread()
     if (!video_mon) {
         cout<<"Failed to create udev monitor for video devices.\n"<<endl;
         udev_unref(udev);
-        return 1;
     }
     udev_monitor_filter_add_match_subsystem_devtype(video_mon, "video4linux", NULL);
     udev_monitor_enable_receiving(video_mon);
@@ -147,7 +144,6 @@ int Sensor_server::Sensor_monitor_thread()
     if (!net_mon) {
         cout<<"Failed to create udev monitor for network devices.\n"<<endl;
         udev_unref(udev);
-        return 1;
     }
     udev_monitor_filter_add_match_subsystem_devtype(net_mon, "net", NULL);
     udev_monitor_enable_receiving(net_mon);
