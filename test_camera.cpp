@@ -1,4 +1,5 @@
 #include <sensor_driver/camera.hpp>
+#include <sensor_driver/imu.hpp>
 #include <sensor_manage/sensor_server.hpp>
 #include <thread>
 #include <iostream>

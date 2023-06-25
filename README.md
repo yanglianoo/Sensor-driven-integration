@@ -1,8 +1,9 @@
 # Sensor-driven-integration
 # 传感器驱动集成-中间件项目-开发文档
- - `lib`：各类传感器的驱动动态库
- - `include`：二次封装头文件
- - `src`: 二次封装源文件 
+ - `sensor_lib`：各类传感器的驱动动态库
+ - `sensor_driver`:针对不同传感器的统一封装，提供统一的传感器数据获取接口
+ - `sensor_manage`:实现了了基于udev机制的即插即用监测，维护了一个传感器设备信息的map
+ - `Qt_Senor_MW`: QT界面的工程文件
  - `CMakeLists.txt`: 编译生成动态库的`CMake版本`，持续更新中
  - `Makefile`: 编译生成动态库的`Makefile`版本，持续更新中
  - `setup.bash`: 在运行测试程序前，用于指定运行时动态库搜寻路径`source setup.bash`      

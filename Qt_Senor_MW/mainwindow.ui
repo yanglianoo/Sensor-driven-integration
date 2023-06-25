@@ -374,7 +374,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>290</y>
+      <y>300</y>
       <width>531</width>
       <height>191</height>
      </rect>
@@ -596,14 +596,6 @@ type:Depth</string>
      <string>Data Processing</string>
     </property>
    </widget>
-   <zorder>frame_left</zorder>
-   <zorder>textBrowser</zorder>
-   <zorder>checkBox_3</zorder>
-   <zorder>stackedWidget</zorder>
-   <zorder>tabWidget</zorder>
-   <zorder>label_4</zorder>
-   <zorder>tabWidget_2</zorder>
-   <zorder>label_5</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
